@@ -1,0 +1,57 @@
+.app-sidebar {
+    border-radius: 1px;
+}
+.dropdown-menu {
+    background-color: #151948;
+	color:white;
+   }
+   
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #e4e6f9;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    color:rgba(255, 255, 255, 0.7); 	
+}
+
+.dropdown-icon {
+    color: #e4e6f9;
+}
+.app-sidebar {
+    border-radius: 1px;
+}
+.app-header {
+    background: #d2d0fa;
+}
+.app-sidebar .side-menu li .side-menu__item.active {
+    background: #6a64e8 !important;
+    color: #fff !important;
+}
+
+.side-menu .side-menu__item:hover {
+  background: #6a64e8 !important;
+  color: #fff !important; }
+  
+.card-header {
+    padding: 1.3rem 1.3rem;
+}
+.page-header .page-title i {
+    background: rgba(8, 158, 96, 0.1);
+    color: #6a64e8;
+}
+.breadcrumb-item a {
+    color: #6a64e8;
+}
+.page-item.active .page-link {
+    background-color: #0a5794;
+    border: 1px solid #0a5794;
+}
+.header-brand-img {
+    height: 3.3rem;   
+}

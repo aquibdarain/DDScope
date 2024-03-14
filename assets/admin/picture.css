@@ -1,0 +1,52 @@
+.app-sidebar {
+    border-radius: 1px;
+}
+.dropdown-menu {
+    background-color: #151948;
+	color:white;
+   }
+   
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #e4e6f9;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    color:rgba(255, 255, 255, 0.7); 	
+}
+
+.dropdown-icon {
+    color: #e4e6f9;
+}
+.app-header {
+    background: #d6d4ff;
+}
+.app-sidebar .side-menu li .side-menu__item.active {
+    background: #6a64e8 !important;
+    color: #fff !important;
+}
+.slide.is-expanded [data-toggle="slide"], .slide .side-menu__item.active {
+    color: white !important;
+    background:#6a64e8 !important;
+}
+.side-menu__item.active, .side-menu__item:hover, .side-menu__item:focus {
+    color:#6a64e8;
+}
+.side-menu__item.active, .side-menu__item:hover, .side-menu__item:focus {
+    color: #6a64e8;
+}
+a {
+    color: #6a64e8;
+}
+.card-header {
+    padding: 1.3rem 1.3rem;
+}
+.page-item.active .page-link {
+    background-color: #6a64e8;
+    border: 1px solid #6a64e8;
+}
