@@ -1081,7 +1081,7 @@ class Home extends CI_Controller
 	// {{baseurl}}/waitlist/add-to-waitlist
 
 
-	// 	public function waitlist_submit()
+	// 	public function waitlist_xyz_submit()
 	// 	{
 	// 		// $reg_id = $this->input->post('reg_id');
 	// 		// // print_r($reg_id);exit;
@@ -1102,67 +1102,257 @@ class Home extends CI_Controller
 	// 		);
 	// // print_r($dataArray);exit;
 	// 		$post_data = json_encode($dataArray);
-	// 		//  print_r($post_data);exit;
+	// 		 print_r($post_data);exit;
 
 	// 		$response = callApiPost($apiLink, $post_data);
-	// 		echo"<pre>";
-	// 		 print_r($response);exit;
+	// 		// echo"<pre>";
+	// 		//  print_r($response);exit;
 	// 		redirect('admin/Delete_acc/index');
 	// 	}
 
 
 
+	// public function waitlist_submit()
+	// {
+	// 	$name = $this->input->post('name');
+	// 	$email = $this->input->post('email');
+	// 	$apiLink = 'waitlist/add-to-waitlist';
+
+	// 	$dataArray = array(
+	// 		"name" => $name,
+	// 		"email" => $email,
+	// 		"returnType" => "Web",
+	// 		"language" => $this->session->userdata("language")
+	// 	);
+
+	// 	$post_data = json_encode($dataArray);
+
+	// 	$response = callApiPost($apiLink, $post_data);
+	// 	print_r($response);exit;
+	// 	// Check if $response is not null and is an array
+	// 	if ($response !== null && is_array($response)) {
+	// 		// Check if 'status' key exists in $response array
+	// 		if (array_key_exists('status', $response) && $response['status'] == true) {
+	// 			echo "hii";
+	// 		} else {
+	// 			echo "Sorry"; // Notify the user if status is not true
+	// 		}
+	// 	} else {
+	// 		echo "Sorry, something went wrong with the API call."; // Notify the user if $response is not an array
+	// 	}
+	// }
+
+
+
+
+
+	// public function waitlist_submit()
+	// {
+	// 	$name = $this->input->post('name');
+	// 	$email = $this->input->post('email');
+
+	// 	$apiLink = 'waitlist/add-to-waitlist';
+	// 	$baseUrl = 'https://uatdd.virtualglobetechnology.com'; // Base URL
+
+	// 	// Prepare data array
+	// 	$dataArray = array(
+	// 		"name" => $name,
+	// 		"email" => $email
+	// 	);
+
+	// 	// Convert data array to JSON
+	// 	$post_data = json_encode($dataArray);
+
+	// 	// Initialize cURL session
+	// 	$curl = curl_init();
+
+	// 	// Set cURL options
+	// 	curl_setopt_array($curl, array(
+	// 		CURLOPT_URL => $baseUrl . '/' . $apiLink,
+	// 		CURLOPT_RETURNTRANSFER => true,
+	// 		CURLOPT_POST => true,
+	// 		CURLOPT_POSTFIELDS => $post_data,
+	// 		CURLOPT_HTTPHEADER => array(
+	// 			'Content-Type: application/json'
+	// 		)
+	// 	));
+
+	// 	// Execute cURL request
+	// 	$response = curl_exec($curl);
+
+	// 	// Close cURL session
+	// 	curl_close($curl);
+
+	// 	// Decode JSON response
+	// 	$response_array = json_decode($response, true);
+	// 	// print_r($response_array);exit;
+	// 	// Check if the request was successful
+	// 	if ($response_array['status'] == true) {
+	// 		// Redirect to the same page
+	// 		// echo "hii";exit;
+	// 		$this->session->set_flashdata('success_message', "Your request for a meeting with the founder has been successfully submitted. We will review your request and get back to you as soon as possible. Thank you for your interest!");
+	// 		redirect('home/waitlist');
+	// 	} else {
+	// 		// Redirect to an error page
+	// 		$this->session->set_flashdata('success_message', "Your request for a meeting with the founder has already been submitted. We'll review your request and get back to you shortly. Thank you for your interest!");
+	// 		redirect('home/waitlist');
+	// 	}
+	// }
+
+	// 	public function waitlist_submit()
+	// {
+	//     // Get name and email from POST data
+	//     $name = $this->input->post('name');
+	//     $email = $this->input->post('email');
+
+	//     // API endpoint and base URL
+	//     $apiLink = '/waitlist/add-to-waitlist';
+	//     $baseUrl = 'https://uatdd.virtualglobetechnology.com';
+
+	//     // Data array to send in the POST request
+	//     $dataArray = array(
+	//         "name" => $name,
+	//         "email" => $email
+	//     );
+
+	//     // Convert data array to JSON
+	//     $post_data = json_encode($dataArray);
+
+	//     // Initialize cURL session
+	//     $curl = curl_init();
+
+	//     // Set cURL options
+	//     curl_setopt_array($curl, array(
+	//         CURLOPT_URL => $baseUrl . $apiLink,
+	//         CURLOPT_RETURNTRANSFER => true,
+	//         CURLOPT_POST => true,
+	//         CURLOPT_POSTFIELDS => $post_data,
+	//         CURLOPT_HTTPHEADER => array(
+	//             'Content-Type: application/json'
+	//         )
+	//     ));
+
+	//     // Execute cURL request
+	//     $response = curl_exec($curl);
+
+	//     // Check for cURL errors
+	//     if (curl_errno($curl)) {
+	//         // Handle cURL error
+	//         $error_message = curl_error($curl);
+	//         // Handle the error appropriately (e.g., log it)
+	//         $this->session->set_flashdata('error_message', "Failed to connect to API: $error_message");
+	//         redirect('home/waitlist');
+	//     }
+
+	//     // Close cURL session
+	//     curl_close($curl);
+
+	//     // Decode JSON response
+	//     $response_array = json_decode($response, true);
+
+	//     // Check if the request was successful
+	//     if ($response_array['status'] == true) {
+	//         // Success message
+	//         $this->session->set_flashdata('success_message', "Your request for a meeting with the founder has been successfully submitted. We will review your request and get back to you as soon as possible. Thank you for your interest!");
+	//     } else {
+	//         // Error message
+	//         $this->session->set_flashdata('error_message', "Failed to submit your request. Please try again later.");
+	//     }
+
+	//     // Redirect to the waitlist page
+	//     redirect('home/waitlist');
+	// }
 	public function waitlist_submit()
-	{
-		$name = $this->input->post('name');
-		$email = $this->input->post('email');
+{
+    $name = $this->input->post('name');
+    $email = $this->input->post('email');
 
-		$apiLink = 'waitlist/add-to-waitlist';
-		$baseUrl = 'https://uatdd.virtualglobetechnology.com'; // Base URL
+    $apiLink = 'waitlist/add-to-waitlist';
+    $baseUrl = 'https://uatdd.virtualglobetechnology.com'; // Base URL
 
-		// Prepare data array
-		$dataArray = array(
-			"name" => $name,
-			"email" => $email
-		);
+    // Prepare data array
+    $dataArray = array(
+        "name" => $name,
+        "email" => $email
+    );
 
-		// Convert data array to JSON
-		$post_data = json_encode($dataArray);
+    // Convert data array to JSON
+    $post_data = json_encode($dataArray);
 
-		// Initialize cURL session
-		$curl = curl_init();
+    // Get API token
+    $tokenData = tokenkey(); // Assuming tokenkey() is your function to obtain the token
+    $token = $tokenData['token'];
 
-		// Set cURL options
-		curl_setopt_array($curl, array(
-			CURLOPT_URL => $baseUrl . '/' . $apiLink,
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_POST => true,
-			CURLOPT_POSTFIELDS => $post_data,
-			CURLOPT_HTTPHEADER => array(
-				'Content-Type: application/json'
-			)
-		));
+    // Initialize cURL session
+    $curl = curl_init();
 
-		// Execute cURL request
-		$response = curl_exec($curl);
+    // Set cURL options
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $baseUrl . '/' . $apiLink,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => $post_data,
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json',
+            'Authorization: ' . $token // Add token to the request headers
+        )
+    ));
 
-		// Close cURL session
-		curl_close($curl);
+    $response = curl_exec($curl);
 
-		// Decode JSON response
-		$response_array = json_decode($response, true);
-		// print_r($response_array);exit;
-		// Check if the request was successful
-		if ($response_array['status'] == true) {
-			// Redirect to the same page
-			// echo "hii";exit;
-			$this->session->set_flashdata('success_message', "Your request for a meeting with the founder has been successfully submitted. We will review your request and get back to you as soon as possible. Thank you for your interest!");
-			redirect('home/waitlist');
-		} 
-		else {
-			// Redirect to an error page
-			$this->session->set_flashdata('success_message', "Your request for a meeting with the founder has already been submitted. We'll review your request and get back to you shortly. Thank you for your interest!");
-			redirect('home/waitlist');
-		}
-	}
+    curl_close($curl);
+
+    $response_array = json_decode($response, true);
+    // print_r($response_array);exit;
+    if ($response_array['status'] == true) {
+        $this->session->set_flashdata('success_message', "Your request for a meeting with the founder has been successfully submitted. We will review your request and get back to you as soon as possible. Thank you for your interest!");
+        redirect('home/waitlist');
+    } else {
+        $this->session->set_flashdata('error_message', "Your request for a meeting with the founder has already been submitted. We'll review your request and get back to you shortly. Thank you for your interest!");
+        redirect('home/waitlist');
+    }
+}
+
+
+
+	// private function sendupdatepassword($token, $password)
+	// {
+
+	// 	// print_r($email);exit;
+	// 	$verificationUrl = 'https://uatdd.virtualglobetechnology.com/web/user/create-new-password';
+
+	// 	$requestData = [
+	// 		'token' => $token,
+	// 		'new_password' => $password
+	// 	];
+
+	// 	$ch = curl_init($verificationUrl);
+
+	// 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	// 	curl_setopt($ch, CURLOPT_POST, true);
+	// 	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($requestData));
+	// 	curl_setopt($ch, CURLOPT_HTTPHEADER, [
+	// 		'Content-Type: application/json',
+	// 	]);
+
+	// 	$response = curl_exec($ch);
+
+	// 	if (curl_errno($ch)) {
+	// 		error_log('Curl error: ' . curl_error($ch));
+	// 	}
+
+	// 	curl_close($ch);
+
+	// 	$responseData = json_decode($response, true);
+	// 	return $responseData;
+	// 	// print_r($responseData);exit;
+	// 	// if ($responseData && isset($responseData['status']) && $responseData['status'] === true) {
+	// 	// 	 $this->session->set_flashdata('success_message', $responseData['message']);
+	// 	// } else {
+	// 	// 	 $this->session->set_flashdata('error_message', 'Failed to send verification email. Please try again.');
+	// 	// }
+	// }
+
+
+
 }
