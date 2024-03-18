@@ -1,14 +1,27 @@
-<?php include("application/views/header_view.php");?>
+<?php include("application/views/header_view.php"); ?>
 
+<style>
+    .contactpage-form {
+        top: 0;
+        right: 0px;
+        position: relative;
+        background: #fff;
+        padding: 10px 30px 20px;
+        margin: 2px;
+    }
 
-    <section class="innerbanner"></section>
-    <section class="bg-con">
+    img {
+        max-width: 100%;
+    }
+</style>
+<section class="innerbanner"></section>
+<section class="bg-con">
     <div class="container">
         <div class="row mt-5 mb-5">
             <div class="col-lg-12">
                 <div class="row mb-5">
                     <div class="col-lg-6">
-                        <img src="<?php echo base_url('images/signin-img.jpg');?>" alt="" />
+                        <img src="<?php echo base_url('images/signin-img.jpg'); ?>" alt="" />
                     </div>
                     <div class="col-lg-6">
                         <div class="alert alert-success alert-dismissible fade show" id="successAlert" style="
@@ -23,26 +36,26 @@
                             <h2 class="mb-0">Sign In</h2>
                             <span class="d-block fs-6 mb-4">Sign In to Your Account</span>
                             <?php
-$success_message = $this->session->flashdata('success_message');
-$error_message = $this->session->flashdata('error_messages');
+                            $success_message = $this->session->flashdata('success_message');
+                            $error_message = $this->session->flashdata('error_messages');
 
-if (!empty($success_message)) {
-    echo '<div class="alert alert-success">' . $success_message . '</div>';
-} elseif (!empty($error_message)) {
-    echo '<div class="alert alert-danger">' . $error_message . '</div>';
-}
-?>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                            if (!empty($success_message)) {
+                                echo '<div class="alert alert-success">' . $success_message . '</div>';
+                            } elseif (!empty($error_message)) {
+                                echo '<div class="alert alert-danger">' . $error_message . '</div>';
+                            }
+                            ?>
+                            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<script>
-     $(document).ready(function(){
-        setTimeout(function(){
-            $('.alert').fadeOut('slow');
-        }, 100000);  
-    });
-</script>
+                            <script>
+                                $(document).ready(function() {
+                                    setTimeout(function() {
+                                        $('.alert').fadeOut('slow');
+                                    }, 100000);
+                                });
+                            </script>
 
-                            <form action="<?php echo base_url('home/Signindata');?>" method="post" class="row g-3" onsubmit="return validateForm()">
+                            <form action="<?php echo base_url('home/Signindata'); ?>" method="post" class="row g-3" onsubmit="return validateForm()">
                                 <div class="col-lg-12 position-relative">
                                     <label for="validationDefault03" class="form-label">Email<span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" name="email" id="validationDefault03" required />
@@ -53,28 +66,28 @@ if (!empty($success_message)) {
                                     <div class="input-group">
                                         <input type="password" class="form-control" name="password" id="passwordInput" required />
                                         <style>
-    #toggleButton:hover {
-        background-color: #ffffff !important;
-    }
-</style>
+                                            #toggleButton:hover {
+                                                background-color: #ffffff !important;
+                                            }
+                                        </style>
 
-<button type="button" id="toggleButton" class="btn btn-outline-secondary" onclick="togglePassword()">
-    <img style="height: 30px;" src="<?php echo base_url('images/closeE.jpg');?>" alt="close-eye-icon">
-</button>
+                                        <button type="button" id="toggleButton" class="btn btn-outline-secondary" onclick="togglePassword()">
+                                            <img style="height: 30px;" src="<?php echo base_url('images/closeE.jpg'); ?>" alt="close-eye-icon">
+                                        </button>
 
                                     </div>
                                     <span id="passwordError" class="text-danger" style="display: none">Please enter a valid password</span>
                                 </div>
                                 <div class="col-lg-12">
-                                <button type="submit" class="btn btn-primary enquir-btn" id="submitButton">SUBMIT</button>
+                                    <button type="submit" class="btn btn-primary enquir-btn" id="submitButton">SUBMIT</button>
                                 </div>
                                 <div>
                                     <span>
-                                        Don't have an account? <a href="<?php echo base_url('home/Signup');?>" style="color: #2f73b2;">Sign Up</a>
+                                        Don't have an account? <a href="<?php echo base_url('home/Signup'); ?>" style="color: #2f73b2;">Sign Up</a>
                                     </span>
                                 </div>
                                 <span>
-                                    <a href="<?php echo base_url('home/forgetpassword');?>" style="color: #2f73b2;">Forget Password?</a>
+                                    <a href="<?php echo base_url('home/forgetpassword'); ?>" style="color: #2f73b2;">Forget Password?</a>
                                 </span>
                             </form>
                         </div>
@@ -131,17 +144,17 @@ if (!empty($success_message)) {
     }
 </script>
 
-    <footer class="footer-section">
+<footer class="footer-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <p>
-                    <a href="<?php echo base_url('');?>">Home</a> |
-                    <a href="<?php echo base_url('Home/vision');?>">Our vision</a> |
-                    <a href="<?php echo base_url('Home/career');?>">Careers</a> |
-                    <a href="<?php echo base_url('Home/video');?>">Videos</a> |
-                    <a href="<?php echo base_url('Home/ads');?>">Ads</a>|
-                    <a href="<?php echo base_url('Home/policy');?>">Privacy Policy </a>
+                    <a href="<?php echo base_url(''); ?>">Home</a> |
+                    <a href="<?php echo base_url('Home/vision'); ?>">Our vision</a> |
+                    <a href="<?php echo base_url('Home/career'); ?>">Careers</a> |
+                    <a href="<?php echo base_url('Home/video'); ?>">Videos</a> |
+                    <a href="<?php echo base_url('Home/ads'); ?>">Ads</a>|
+                    <a href="<?php echo base_url('Home/policy'); ?>">Privacy Policy </a>
                 </p>
                 <p>contact@dozendiamonds.com</p>
                 <p>Copyright © 2023 DozenDiamonds. All Rights Reserved.</p>
@@ -149,8 +162,9 @@ if (!empty($success_message)) {
         </div>
     </div>
 </footer>
+<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js'); ?>"></script>
 
-    <!-- <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+<!-- <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="venobox.min.js"></script>
     <script>
 
@@ -336,7 +350,7 @@ if (!empty($success_message)) {
             });
         });
     </script> -->
-    <!--     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>-->
+<!--     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>-->
 </body>
 
 </html>
