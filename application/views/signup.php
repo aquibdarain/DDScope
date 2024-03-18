@@ -1,5 +1,18 @@
 <?php include("application/views/header_view.php");?>
+<style>
+.contactpage-form {
+        top: 0;
+        right: 0px;
+        position: relative;
+        background: #fff;
+        padding: 10px 30px 20px;
+        margin: 2px;
+    }
 
+    img {
+    max-width: 100%;
+}
+</style>
 
     <section class="innerbanner"></section>
     <section class="bg-con">
@@ -507,7 +520,7 @@ if (!empty($success_message)) {
         </div>
     </div>
 </footer>
-
+<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js');?>"></script>
 
     <!-- <script>
          const chBoxes =
