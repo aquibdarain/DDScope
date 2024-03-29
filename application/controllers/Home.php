@@ -31,6 +31,7 @@ class Home extends CI_Controller
 		$this->load->model('Signup_model');
 		$this->load->model('Signin_model');
 		$this->load->helper('my_general_helper');
+		$this->load->helper('url');
 	}
 
 	public function index()
@@ -199,6 +200,41 @@ class Home extends CI_Controller
 			$password = $_POST["password"];
 			$hashedPassword = hash('sha512', $password);
 			// print_r($hashedPassword);exit;
+
+
+			// Validate reCAPTCHA
+			$captcha_response = trim($this->input->post('g-recaptcha-response'));
+			if ($captcha_response == '') {
+				$this->session->set_flashdata('error_message', 'reCAPTCHA validation failed. Please try again.');
+				redirect('Home/signup');
+				return;
+			}
+
+			$keySecret = '6LelCKYpAAAAADhYZpodlrvvUzeW7SC6k3yBl7zJ';
+
+			$check = array(
+				'secret'    =>  $keySecret,
+				'response'  =>  $captcha_response
+			);
+
+			$startProcess = curl_init();
+			curl_setopt($startProcess, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+			curl_setopt($startProcess, CURLOPT_POST, true);
+			curl_setopt($startProcess, CURLOPT_POSTFIELDS, http_build_query($check));
+			curl_setopt($startProcess, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($startProcess, CURLOPT_RETURNTRANSFER, true);
+			$receiveData = curl_exec($startProcess);
+			curl_close($startProcess);
+
+			$finalResponse = json_decode($receiveData, true);
+
+			if (!$finalResponse['success']) {
+				$this->session->set_flashdata('error_message', 'reCAPTCHA validation failed. Please try again.');
+				redirect('Home/signup');
+				return;
+			}
+
+
 			if (empty($name) || empty($email) || empty($city) || empty($selectedOptions) || empty($interestedOptions) || empty($countrycode) || empty($number) || empty($password)) {
 				$this->session->set_flashdata('error_message', 'All fields are required. Please fill in all the required information.');
 				redirect('Home/signup');
@@ -280,16 +316,6 @@ class Home extends CI_Controller
 		// }
 	}
 
-
-
-
-
-
-
-
-
-
-
 	private function sendsignupdata($name, $email, $city, $phoneNumber, $password, $selectedOptions, $interestedOptions)
 	{
 
@@ -336,11 +362,6 @@ class Home extends CI_Controller
 			return false;
 		}
 	}
-
-
-
-
-
 
 	private function sendVerificationEmail($email)
 	{
@@ -1263,55 +1284,83 @@ class Home extends CI_Controller
 	//     redirect('home/waitlist');
 	// }
 	public function waitlist_submit()
-{
-    $name = $this->input->post('name');
-    $email = $this->input->post('email');
+	{
+		$name = $this->input->post('name');
+		$email = $this->input->post('email');
 
-    $apiLink = 'waitlist/add-to-waitlist';
-    $baseUrl = 'https://uatdd.virtualglobetechnology.com'; // Base URL
+	   // Validate reCAPTCHA
+	   $captcha_response = $this->input->post('g-recaptcha-response');
+	   if (empty($captcha_response)) {
+		   $this->session->set_flashdata('error_message', 'Please complete the reCAPTCHA.');
+		   redirect('home/waitlist');
+		   return;
+	   }
+   
+	   // Verify reCAPTCHA
+	   $recaptcha_secret_key = '6LelCKYpAAAAADhYZpodlrvvUzeW7SC6k3yBl7zJ';
+	   $recaptcha_response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret_key}&response={$captcha_response}");
+	   $responseKeys = json_decode($recaptcha_response, true);
+   
+	   // Check if reCAPTCHA verification was successful
+	   if (intval($responseKeys["success"]) !== 1) {
+		   $this->session->set_flashdata('error_message', 'reCAPTCHA verification failed. Please try again.');
+		   redirect('home/waitlist');
+		   return;
+	   }
 
-    // Prepare data array
-    $dataArray = array(
-        "name" => $name,
-        "email" => $email
-    );
+		$apiLink = 'waitlist/add-to-waitlist';
+		$baseUrl = 'https://uatdd.virtualglobetechnology.com'; // Base URL
 
-    // Convert data array to JSON
-    $post_data = json_encode($dataArray);
+		// Prepare data array
+		$dataArray = array(
+			"name" => $name,
+			"email" => $email
+		);
 
-    // Get API token
-    $tokenData = tokenkey(); // Assuming tokenkey() is your function to obtain the token
-    $token = $tokenData['token'];
+		// Convert data array to JSON
+		$post_data = json_encode($dataArray);
 
-    // Initialize cURL session
-    $curl = curl_init();
+		// Get API token
+		$tokenData = tokenkey(); // Assuming tokenkey() is your function to obtain the token
+		$token = $tokenData['token'];
 
-    // Set cURL options
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => $baseUrl . '/' . $apiLink,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => $post_data,
-        CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/json',
-            'Authorization: ' . $token // Add token to the request headers
-        )
-    ));
+		// Initialize cURL session
+		$curl = curl_init();
 
-    $response = curl_exec($curl);
+		// Set cURL options
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => $baseUrl . '/' . $apiLink,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_POST => true,
+			CURLOPT_POSTFIELDS => $post_data,
+			CURLOPT_HTTPHEADER => array(
+				'Content-Type: application/json',
+				'Authorization: ' . $token // Add token to the request headers
+			)
+		));
 
-    curl_close($curl);
+		$response = curl_exec($curl);
 
-    $response_array = json_decode($response, true);
-    // print_r($response_array);exit;
-    if ($response_array['status'] == true) {
-        $this->session->set_flashdata('success_message', "Your request for a meeting with the founder has been successfully submitted. We will review your request and get back to you as soon as possible. Thank you for your interest!");
-        redirect('home/waitlist');
-    } else {
-        $this->session->set_flashdata('error_message', "Your request for a meeting with the founder has already been submitted. We'll review your request and get back to you shortly. Thank you for your interest!");
-        redirect('home/waitlist');
-    }
-}
+		curl_close($curl);
+
+		$response_array = json_decode($response, true);
+
+		if ($response_array['status'] == true) {
+			// $this->session->set_flashdata('success_message', "Your request for a meeting with the founder has been successfully submitted. We will review your request and get back to you as soon as possible. Thank you for your interest!");
+			// redirect('home/waitlist');
+
+			$this->session->set_flashdata('success_message', $response_array["message"]);
+			redirect('home/waitlist');
+		} elseif ($response_array['status'] == false) {
+			$this->session->set_flashdata('error_message', $response_array["message"]);
+			redirect('home/waitlist');
+		}
+		// else {
+		// 	$this->session->set_flashdata('error_message', "Your request for a meeting with the founder has already been submitted. We'll review your request and get back to you shortly. Thank you for your interest!");
+		// 	redirect('home/waitlist');
+		// }
+	}
+
 
 
 
@@ -1353,6 +1402,238 @@ class Home extends CI_Controller
 	// 	// }
 	// }
 
+	// public function scheduleMeeting()
+	// {
+	// 	// if($SERVER(['userId']))
+	// 	$name = $this->input->post('fullName');
+	// 	$email = $this->input->post('email');
+	// 	$fromDateTime = $this->input->post('fromDateTime');
+	// 	$toDateTime = $this->input->post('toDateTime');
+	// 	$title = $this->input->post('title');
+	// 	$duration = $this->input->post('duration');
+
+	// 	// echo"<pre>";
+	// 	// print_r($_POST);exit;
+
+	// 	$apiLink = 'schedule/meeting';
+	// 	// print_r($apiLink);exit;
+	// 	$baseUrl = 'https://uatdd.virtualglobetechnology.com';
+	// 	// echo "hii";exit;
+	// 	$dataArray = array(
+	// 		"fullName" => $name,
+	// 		"email" => $email,
+	// 		"fromDateTime" => $fromDateTime,
+	// 		"toDateTime" => $toDateTime,
+	// 		"title" => $title,
+	// 		"duration" => $duration
+	// 	);
+	// 	// echo "hi";exit;
+
+	// 	// echo"<pre>";
+	// 	// print_r($dataArray);exit;
+
+	// 	$post_data = json_encode($dataArray);
+
+	// 	// $tokenData = tokenkey(); 
+	// 	// $token = $tokenData['token'];
+
+	// 	$curl = curl_init();
+
+	// 	// its our request headers
+	// 	curl_setopt_array($curl, array(
+	// 		CURLOPT_URL => $baseUrl . '/' . $apiLink,
+	// 		CURLOPT_RETURNTRANSFER => true,
+	// 		CURLOPT_POST => true,
+	// 		CURLOPT_POSTFIELDS => $post_data,
+	// 		CURLOPT_HTTPHEADER => array(
+	// 			'Content-Type: application/json',
+	// 			// 'Authorization: ' . $token 
+	// 		)
+	// 	));
+
+	// 	$response = curl_exec($curl);
+	// 	// print_r($response);exit;
+	// 	// $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+	// 	curl_close($curl);
+
+	// 	$response_array = json_decode($response, true);
+	// 	// print_r($response_array);exit;
+
+	// 	if ($response_array['status'] == true) {
+	// 		$this->session->set_flashdata('success_message', "Done");
+	// 		redirect('home/investor');
+	// 	} else {
+	// 		$this->session->set_flashdata('error_message', "Not Done");
+	// 		redirect('home/investor');
+	// 	}
+
+	// 	// redirect('home/investor');
+	// }
+
+	// private function sendMeetingdata($name, $email, $fromDateTime, $toDateTime, $title, $duration)
+	// {
+
+	// 	// print_r($email);exit;
+	// 	$verificationUrl = 'https://uatdd.virtualglobetechnology.com/web/user/signup';
+	// 	// $verificationUrl = 'https://ldtchndw-3000.inc1.devtunnels.ms/web/user/signup';
+
+	// 	$requestData = [
+	// 		"fullName" => $name,
+	// 		"email" => $email,
+	// 		"fromDateTime" => $fromDateTime,
+	// 		"toDateTime" => $toDateTime,
+	// 		"title" => $title,
+	// 		"duration" => $duration
+	// 	];
+
+	// 	$ch = curl_init($verificationUrl);
+
+	// 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	// 	curl_setopt($ch, CURLOPT_POST, true);
+	// 	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($requestData));
+	// 	curl_setopt($ch, CURLOPT_HTTPHEADER, [
+	// 		'Content-Type: application/json',
+	// 	]);
+
+	// 	$response = curl_exec($ch);
+	// 	//  var_dump($response);
+
+	// 	if (curl_errno($ch)) {
+	// 		error_log('Curl error: ' . curl_error($ch));
+	// 	}
+
+	// 	curl_close($ch);
+
+	// 	$responseData = json_decode($response, true);
+	// 	//  echo"<pre>";
+	// 	//  print_r($responseData);
+
+	// 	if ($responseData && isset($responseData['status']) && $responseData['status'] === true) {
+	// 		return $responseData['data'];
+	// 	} else {
+	// 		$this->session->set_flashdata('error_message', 'Failed to send verification email. Please try again.');
+	// 		return false;
+	// 	}
+	// }
 
 
+
+	public function scheduleMeeting()
+	{
+
+		if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+			$name = $this->input->post("fullName");
+			$email = $this->input->post("email");
+			$title = $this->input->post("title");
+			$city = $this->input->post("city");
+			$duration = $this->input->post("duration");
+			$fromTime = $this->input->post("fromDateTime") . ":00";
+			$toTime = $this->input->post("toDateTime") . ":00";
+
+			// echo"<pre>";
+			//  print_r($_POST);exit;
+
+			if (empty($name) || empty($email) || empty($title) || empty($city) || empty($duration) || empty($fromTime) || empty($toTime)) {
+				$this->session->set_flashdata('error_message', 'All fields are required. Please fill in all the required information.');
+				redirect('Home/investor');
+				return;
+			}
+
+			if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+				$this->session->set_flashdata('error_message', 'Invalid email format. Please enter a valid email address.');
+				redirect('Home/investor');
+				return;
+			}
+
+			// $this->load->model('Signup_model');
+			// if ($this->Signup_model->isEmailExistsforMeeting($email)) {
+			//  $this->session->set_flashdata('error_message', 'Email already exists. Please choose a different email.');
+			//  $this->load->view('investor'); // Load investor view
+			//  return;
+			// }
+
+
+			 // Verify reCAPTCHA
+			 $captcha_response = $this->input->post('g-recaptcha-response');
+			 if (empty($captcha_response)) {
+				 $this->session->set_flashdata('error_message', 'Please complete the reCAPTCHA.');
+				 redirect('Home/investor');
+				 return;
+			 }
+	 
+			 $recaptcha_secret_key = '6LelCKYpAAAAADhYZpodlrvvUzeW7SC6k3yBl7zJ'; 
+			 $recaptcha_response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret_key}&response={$captcha_response}");
+			 $responseKeys = json_decode($recaptcha_response, true);
+	 
+			 if (intval($responseKeys["success"]) !== 1) {
+				 $this->session->set_flashdata('error_message', 'reCAPTCHA verification failed. Please try again.');
+				 redirect('Home/investor');
+				 return;
+			 }
+
+			 
+			$ok = $this->sendmeetingdata($name, $email, $title, $city, $duration, $fromTime, $toTime);
+
+			//  echo"<pre>";
+			//  print_r($ok);exit;
+
+			if ($ok) {
+				$this->session->set_flashdata('success_messages', 'Your meeting request with our founder has been received. We will be in touch shortly to schedule a time. Thank you!');
+
+				redirect('Home/investor?formSubmitted=true');
+			} else {
+				$this->session->set_flashdata('error_message', 'Failed to send the request for a meeting with the founder. Please try again.');
+				redirect('Home/investor?formSubmitted=true');
+			}
+		} else {
+			$this->session->set_flashdata('error_message', 'Invalid data. Please try again.');
+			redirect('Home/investor?formSubmitted=true');
+		}
+	}
+
+
+	public function sendmeetingdata($name, $email, $title, $city, $duration, $fromTime, $toTime)
+	{
+		$meetingUrl = 'https://uatdd.virtualglobetechnology.com/schedule/meeting';
+
+		$requestData = [
+			'fullName' => $name,
+			'email' => $email,
+			'title' => $title,
+			'city' => $city,
+			'duration' => $duration,
+			'fromDateTime' => $fromTime,
+			'toDateTime' => $toTime,
+		];
+		// echo "<pre>";print_r($requestData);exit;
+		$ch = curl_init($meetingUrl);
+
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($requestData));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, [
+			'Content-Type: application/json',
+		]);
+
+		$response = curl_exec($ch);
+		// print_r($response);exit;
+		if (curl_errno($ch)) {
+			error_log('Curl error: ' . curl_error($ch));
+			curl_close($ch);
+			return false; // Return false if there's a CURL error
+		}
+
+		curl_close($ch);
+
+		$responseData = json_decode($response, true);
+
+		if ($responseData && isset($responseData['status']) && $responseData['status'] === true) {
+			return true; // Return true if the response indicates success
+		} else {
+			error_log('Failed to send the request for a meeting with the founder: ' . $response);
+			return false; // Return false if there's a failure response
+		}
+	}
 }
