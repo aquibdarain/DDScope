@@ -8,11 +8,27 @@
         background: #fff;
         padding: 10px 30px 20px;
         margin: 2px;
+        /* margin-left: 10px;
+    margin-right: -70px; */
     }
 
-    img {
-        max-width: 100%;
+    @media (max-width: 992px) {
+
+        .contactpage-form {
+            top: 0;
+            right: 0px;
+            position: relative;
+            background: #fff;
+            padding: 10px 30px 20px;
+            margin: 2px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
     }
+
+    /* img {
+        max-width: 100%;
+    } */
 </style>
 <section class="innerbanner"></section>
 <section class="bg-con">
@@ -33,7 +49,7 @@
                             <button type="button" class="btn-close"></button>
                         </div>
                         <div class="contactpage-form shadow rounded">
-                            <h2 class="mb-0">Sign In</h2>
+                            <h2 class="mb-0" style="color: #1D4E66;">Sign In</h2>
                             <span class="d-block fs-6 mb-4">Sign In to Your Account</span>
                             <?php
                             $success_message = $this->session->flashdata('success_message');
@@ -55,41 +71,50 @@
                                 });
                             </script>
 
-                            <form action="<?php echo base_url('home/Signindata'); ?>" method="post" class="row g-3" onsubmit="return validateForm()">
-                                <div class="col-lg-12 position-relative">
-                                    <label for="validationDefault03" class="form-label">Email<span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" name="email" id="validationDefault03" required />
-                                    <span id="emailError" class="text-danger" style="display: none">Please enter valid email</span>
-                                </div>
-                                <div class="col-lg-12 position-relative">
-                                    <label for="validationDefault03" class="form-label">Password<span style="color: red;">*</span></label>
-                                    <div class="input-group">
-                                        <input type="password" class="form-control" name="password" id="passwordInput" required />
-                                        <style>
-                                            #toggleButton:hover {
-                                                background-color: #ffffff !important;
-                                            }
-                                        </style>
+                            <?= form_open('home/Signindata', array('class' => 'row g-3', 'onsubmit' => 'return validateForm()')); ?>
+                            <div class="col-lg-12 position-relative">
+                                <label for="validationDefault03" class="form-label">Email<span style="color: red;">*</span></label>
+                                <?= form_input(array('type' => 'text', 'name' => 'email', 'id' => 'validationDefault03', 'class' => 'form-control', 'required' => 'required')); ?>
+                                <span id="emailError" class="text-danger" style="display: none">Please enter valid email</span>
+                            </div>
+                            <div class="col-lg-12 position-relative">
+                                <label for="validationDefault03" class="form-label">Password<span style="color: red;">*</span></label>
+                                <div class="input-group">
+                                    <?= form_password(array('name' => 'password', 'id' => 'passwordInput', 'class' => 'form-control', 'required' => 'required')); ?>
+                                    <style>
+                                        #toggleButton:hover {
+                                            background-color: #ffffff !important;
+                                        }
+                                    </style>
 
-                                        <button type="button" id="toggleButton" class="btn btn-outline-secondary" onclick="togglePassword()">
-                                            <img style="height: 30px;" src="<?php echo base_url('images/closeE.jpg'); ?>" alt="close-eye-icon">
-                                        </button>
+                                    <button type="button" id="toggleButton" class="btn btn-outline-secondary" onclick="togglePassword()">
+                                        <img style="height: 30px;" src="<?php echo base_url('images/closeE.jpg'); ?>" alt="close-eye-icon">
+                                    </button>
+                                </div>
+                                <span id="passwordError" class="text-danger" style="display: none">Please enter a valid password</span>
+                            </div>
 
-                                    </div>
-                                    <span id="passwordError" class="text-danger" style="display: none">Please enter a valid password</span>
-                                </div>
-                                <div class="col-lg-12">
-                                    <button type="submit" class="btn btn-primary enquir-btn" id="submitButton">SUBMIT</button>
-                                </div>
-                                <div>
-                                    <span>
-                                        Don't have an account? <a href="<?php echo base_url('home/Signup'); ?>" style="color: #2f73b2;">Sign Up</a>
-                                    </span>
-                                </div>
+
+
+                            <div class="form-group">
+                                <div class="g-recaptcha" data-sitekey="6LelCKYpAAAAAHKFwH7w6ALStffm_X-vz2qH_xeU" required></div>
+                                <span id="recaptchaError" style="color: red; display: none;">Please complete the reCAPTCHA.</span>
+                            </div>
+
+
+                            <div class="col-lg-12">
+                                <?= form_submit(array('class' => 'btn btn-primary enquir-btn', 'id' => 'submitButton'), 'SUBMIT'); ?>
+                            </div>
+                            <div>
                                 <span>
-                                    <a href="<?php echo base_url('home/forgetpassword'); ?>" style="color: #2f73b2;">Forget Password?</a>
+                                    Don't have an account? <?= anchor('home/Signup', 'Sign Up', array('style' => 'color: #2f73b2;')); ?>
                                 </span>
-                            </form>
+                            </div>
+                            <span>
+                                <?= anchor('home/forgetpassword', 'Forget Password?', array('style' => 'color: #2f73b2;')); ?>
+                            </span>
+                            <?= form_close(); ?>
+
                         </div>
                     </div>
                 </div>
@@ -97,6 +122,41 @@
         </div>
     </div>
     <div class="row"></div>
+
+    <!-- Enquiry button code start from here -->
+    <!-- <div class="floating-button">
+
+        <a href="<?php echo base_url('Home/enquire'); ?>">
+            <button type="button" class="btn enquire-btn custom-enquire-btn sticky-btn">
+                Enquire Now
+            </button>
+        </a>
+
+    </div>
+
+    <style>
+        .custom-enquire-btn {
+            background-color: #1D4E66;
+            color: white;
+            margin-top: 408px;
+            border-radius: 100px;
+            font-weight: 600;
+            position: fixed;
+            /* Add padding to increase the clickable area */
+            padding: 10px 20px;
+            /* Add transition for smooth effect */
+            transition: border-color 0.3s ease;
+            /* Initial border color */
+            border: 2px solid transparent;
+        }
+
+        .custom-enquire-btn:hover {
+            border-color: black;
+        }
+    </style> -->
+    <!-- Enquiry button code end here -->
+
+
 </section>
 
 <script>
@@ -119,9 +179,19 @@
             document.getElementById("passwordError").style.display = "none";
         }
 
+        // captcha validation 
+        var recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse || recaptchaResponse.length === 0) {
+            document.getElementById("recaptchaError").style.display = "block";
+            isValid = false;
+        } else {
+            document.getElementById("recaptchaError").style.display = "none";
+        }
+
         if (isValid) {
             document.getElementById("submitButton").disabled = true;
         }
+
         return isValid;
     }
 
@@ -144,6 +214,7 @@
     }
 </script>
 
+
 <footer class="footer-section">
     <div class="container">
         <div class="row">
@@ -163,6 +234,9 @@
     </div>
 </footer>
 <script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js'); ?>"></script>
+<!--  Captcha API -->
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
 
 <!-- <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="venobox.min.js"></script>
