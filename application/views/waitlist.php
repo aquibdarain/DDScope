@@ -10,17 +10,22 @@
         margin: 2px;
     }
 
-    img {
+    /* img {
         max-width: 100%;
-    }
-
-    .shadow {
-        box-shadow: 0 .1rem 1rem rgba(-1, -1, -1) !important;
-    }
+    } */
 
     @media (max-width: 992px) {
+
         .contactpage-form {
-            top: 10px;
+            top: 0;
+            right: 0px;
+            position: relative;
+            background: #fff;
+            padding: 10px 30px 20px;
+            margin: 2px;
+            margin-left: 10px;
+            margin-right: 10px;
+
         }
     }
 </style>
@@ -42,8 +47,9 @@
                         " role="alert">
                             <button type="button" class="btn-close"></button>
                         </div>
+
                         <div class="contactpage-form shadow rounded">
-                            <h2 class="mb-0">WaitList Form</h2>
+                            <h2 class="mb-0" style="color: #1D4E66;">WaitList Form</h2>
                             <?php
                             $success_message = $this->session->flashdata('success_message');
                             $error_message = $this->session->flashdata('error_message');
@@ -63,31 +69,29 @@
                                     }, 100000);
                                 });
                             </script>
+                            <?= form_open('Home/waitlist_submit', array('class' => 'row g-3', 'onsubmit' => 'return validateForm()')); ?>
+                            <div class="col-lg-12 position-relative mt-4">
+                                <label for="validationDefault03" class="form-label">Full Name<span style="color: red;">*</span></label>
+                                <?= form_input(array('type' => 'text', 'name' => 'name', 'id' => 'validationDefault03', 'class' => 'form-control', 'required' => 'required')); ?>
+                                <!-- <span id="nameError" class="text-danger" style="display: none">Please enter a valid name (at least 3 characters)</span> -->
+                            </div>
 
-                            <form action="<?php echo base_url('Home/waitlist_submit'); ?>" method="post" class="row g-3" onsubmit="return validateForm()">
-                                <div class="col-lg-12 position-relative mt-4">
-                                    <label for="validationDefault03" class="form-label">Full Name<span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" name="name" id="validationDefault03" required />
-                                    <span id="nameError" class="text-danger" style="display: none">Please enter a valid name</span>
-                                </div>
+                            <div class="col-lg-12 position-relative">
+                                <label for="validationDefault04" class="form-label">Email<span style="color: red;">*</span></label>
+                                <?= form_input(array('type' => 'email', 'name' => 'email', 'id' => 'validationDefault04', 'class' => 'form-control', 'required' => 'required')); ?>
+                                <!-- <span id="emailError" class="text-danger" style="display: none">Please enter a valid email</span> -->
+                            </div>
 
-                                <div class="col-lg-12 position-relative">
-                                    <label for="validationDefault03" class="form-label">Email<span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" name="email" id="validationDefault03" required />
-                                    <span id="emailError" class="text-danger" style="display: none">Please enter valid email</span>
-                                </div>
-                                <div class="col-lg-12">
-                                    <button type="submit" class="btn btn-primary enquir-btn" id="submitButton">SUBMIT</button>
-                                </div>
-                                <!-- <div>
-                                    <span>
-                                        Don't have an account? <a href="<?php echo base_url('home/Signup'); ?>" style="color: #2f73b2;">Sign Up</a>
-                                    </span>
-                                </div>
-                                <span>
-                                    <a href="<?php echo base_url('home/forgetpassword'); ?>" style="color: #2f73b2;">Forget Password?</a>
-                                </span> -->
-                            </form>
+                            <div class="form-group">
+                                <div class="g-recaptcha" data-sitekey="6LelCKYpAAAAAHKFwH7w6ALStffm_X-vz2qH_xeU" required></div>
+                                <span id="recaptchaError" style="color: red; display: none;">Please complete the reCAPTCHA.</span>
+                            </div>
+
+
+                            <div class="col-lg-12">
+                                <?= form_submit(array('class' => 'btn btn-primary enquir-btn', 'id' => 'submitButton', 'style' => 'background-color: #1D4E66;'), 'SUBMIT'); ?>
+                            </div>
+                            <?= form_close(); ?>
                         </div>
                     </div>
                 </div>
@@ -95,15 +99,49 @@
         </div>
     </div>
     <div class="row"></div>
+
+
+    <!-- Enquiry button code start from here -->
+    <!-- <div class="floating-button">
+
+        <a href="<?php echo base_url('Home/enquire'); ?>">
+            <button type="button" class="btn enquire-btn custom-enquire-btn sticky-btn">
+                Enquire Now
+            </button>
+        </a>
+
+    </div>
+
+    <style>
+        .custom-enquire-btn {
+            background-color: #1D4E66;
+            color: white;
+            margin-top: 412px;
+            border-radius: 100px;
+            font-weight: 600;
+            position: fixed;
+            /* Add padding to increase the clickable area */
+            padding: 10px 20px;
+            /* Add transition for smooth effect */
+            transition: border-color 0.3s ease;
+            /* Initial border color */
+            border: 2px solid transparent;
+        }
+
+        .custom-enquire-btn:hover {
+            border-color: black;
+        }
+    </style> -->
+    <!-- Enquiry button code end here -->
+
 </section>
 <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
 <script>
     function validateForm() {
         var isValid = true;
 
-        // Validate name
-        var nameInput = document.getElementById("nameInput");
-        var nameRegex = /^[A-Za-z\s]+$/; // Regular expression to allow only alphabetical characters and spaces
+        var nameInput = document.getElementById("validationDefault03");
+        var nameRegex = /^[A-Za-z\s]{3,}$/; // Regular expression to allow only alphabetical characters and spaces, minimum 3 characters
 
         if (nameInput.value.trim() === "" || !nameRegex.test(nameInput.value.trim())) {
             document.getElementById("nameError").style.display = "block";
@@ -112,9 +150,8 @@
             document.getElementById("nameError").style.display = "none";
         }
 
-        // Validate email
-        var emailInput = document.getElementById("emailInput");
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regular expression for email validation
+        var emailInput = document.getElementById("validationDefault04");
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (emailInput.value.trim() === "" || !emailRegex.test(emailInput.value.trim())) {
             document.getElementById("emailError").style.display = "block";
@@ -123,59 +160,35 @@
             document.getElementById("emailError").style.display = "none";
         }
 
-        // Validate password
-        var passwordInput = document.getElementById("passwordInput");
-        if (passwordInput.value.trim() === "") {
-            document.getElementById("passwordError").style.display = "block";
-            isValid = false;
-        } else {
-            document.getElementById("passwordError").style.display = "none";
-        }
+        // var recaptchaResponse = grecaptcha.getResponse();
+        // if (!recaptchaResponse || recaptchaResponse.length === 0) {
+        //     document.getElementById("recaptchaError").style.display = "block";
+        //     isValid = false;
+        // } else {
+        //     document.getElementById("recaptchaError").style.display = "none";
+        // }
 
-        if (isValid) {
-            document.getElementById("submitButton").disabled = true;
-        }
         return isValid;
     }
 </script>
 
-<!-- i am adding this for latest form validation -->
 <script>
     function validateForm() {
         var isValid = true;
 
-        var nameInput = document.getElementById("validationDefault03");
-        var nameRegex = /^[A-Za-z\s]+$/; // Regular expression to allow only alphabetical characters and spaces
-
-        if (nameInput.value.trim() === "" || !nameRegex.test(nameInput.value.trim())) {
-            document.getElementById("nameError").style.display = "block";
+        // Captcha validation
+        var recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse || recaptchaResponse.length === 0) {
+            document.getElementById("recaptchaError").style.display = "block";
             isValid = false;
         } else {
-            document.getElementById("nameError").style.display = "none";
+            document.getElementById("recaptchaError").style.display = "none";
         }
 
-        var emailInput = document.getElementById("validationDefault03");
-        if (emailInput.value.trim() === "" || !validateEmail(emailInput)) {
-            document.getElementById("emailError").style.display = "block";
-            isValid = false;
-        } else {
-            document.getElementById("emailError").style.display = "none";
-        }
-
-        var passwordInput = document.getElementById("passwordInput");
-        if (passwordInput.value.trim() === "") {
-            document.getElementById("passwordError").style.display = "block";
-            isValid = false;
-        } else {
-            document.getElementById("passwordError").style.display = "none";
-        }
-
-        if (isValid) {
-            document.getElementById("submitButton").disabled = true;
-        }
         return isValid;
     }
 </script>
+
 
 <footer class="footer-section">
     <div class="container">
@@ -196,6 +209,10 @@
     </div>
 </footer>
 <script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js'); ?>"></script>
+<!-- captcha API -->
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
+
 
 <!-- <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="venobox.min.js"></script>
