@@ -73,8 +73,45 @@ class Home extends CI_Controller
 
 	public function enquire()
 	{
-		$this->load->view('enquire');
+		// Load form validation library
+		$this->load->library('form_validation');
+
+		// Set validation rules
+		$this->form_validation->set_rules('name', 'Name', 'required|alpha');
+		$this->form_validation->set_rules('number', 'Mobile Number', 'required|exact_length[10]|numeric');
+		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+		$this->form_validation->set_rules('message', 'Message', 'required');
+		$this->form_validation->set_rules('g-recaptcha-response', 'reCAPTCHA', 'required');
+
+		// Set error delimiters
+		// $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+
+		if ($this->form_validation->run() == FALSE) {
+			// If validation fails, load the view with validation errors
+			$this->load->view('enquire');
+		} else {
+			// Validate reCAPTCHA
+			$recaptchaResponse = $this->input->post('g-recaptcha-response');
+			$recaptchaSecret = '6LelCKYpAAAAADhYZpodlrvvUzeW7SC6k3yBl7zJ';
+			$response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $recaptchaSecret . "&response=" . $recaptchaResponse);
+			$responseKeys = json_decode($response, true);
+
+			if (intval($responseKeys["success"]) !== 1) {
+				// reCAPTCHA validation failed
+				$this->form_validation->set_message('g-recaptcha-response', 'Please complete the reCAPTCHA.');
+				$this->load->view('enquire');
+			} else {
+				// If validation succeeds, set a flash message
+				$this->session->set_flashdata('success_message', 'Your enquiry has been submitted successfully!');
+				// Redirect to the enquire page or any other page as needed
+				redirect('home/enquire');
+			}
+		}
 	}
+
+
+
+
 
 	public function signup()
 	{
@@ -316,7 +353,7 @@ class Home extends CI_Controller
 		// }
 	}
 
-	private function sendsignupdata($name, $email, $city, $phoneNumber, $password, $selectedOptions, $interestedOptions)
+	public function sendsignupdata($name, $email, $city, $phoneNumber, $password, $selectedOptions, $interestedOptions)
 	{
 
 		// print_r($email);exit;
@@ -333,13 +370,20 @@ class Home extends CI_Controller
 			'reg_intrested_in' => $interestedOptions,
 		];
 
+		// echo"<pre>";
+		//  print_r($requestData);exit;
+
 		$ch = curl_init($verificationUrl);
+		// Get API token
+		$tokenData = tokenkey(); // Assuming tokenkey() is your function to obtain the token
+		$token = $tokenData['token'];
 
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($requestData));
 		curl_setopt($ch, CURLOPT_HTTPHEADER, [
 			'Content-Type: application/json',
+			'Authorization: ' . $token
 		]);
 
 		$response = curl_exec($ch);
@@ -489,11 +533,15 @@ class Home extends CI_Controller
 
 		$ch = curl_init($verificationUrl);
 
+		$tokenData = tokenkey(); // Assuming tokenkey() is your function to obtain the token
+		$token = $tokenData['token'];
+
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($requestData));
 		curl_setopt($ch, CURLOPT_HTTPHEADER, [
 			'Content-Type: application/json',
+			'Authorization: ' . $token
 		]);
 
 		$response = curl_exec($ch);
@@ -608,19 +656,19 @@ class Home extends CI_Controller
 	}
 
 
-	public function profile()
-	{
-		if (!$this->session->userdata('User_id')) {
-			redirect('Home/signin');
-		}
+	// public function profile()
+	// {
+	// 	if (!$this->session->userdata('User_id')) {
+	// 		redirect('Home/signin');
+	// 	}
 
-		// Fetch user data from session
-		$data['user_name'] = $this->session->userdata('reg_username');
-		$data['user_email'] = $this->session->userdata('reg_email');
-		// 	echo"<pre>";
-		// print_r($_SESSION);exit;
-		$this->load->view('profile', $data);
-	}
+	// 	// Fetch user data from session
+	// 	$data['user_name'] = $this->session->userdata('reg_username');
+	// 	$data['user_email'] = $this->session->userdata('reg_email');
+	// 	// 	echo"<pre>";
+	// 	// print_r($_SESSION);exit;
+	// 	$this->load->view('profile', $data);
+	// }
 
 
 	public function user_delete()
@@ -859,7 +907,7 @@ class Home extends CI_Controller
 
 		$this->email->send();
 		$this->session->set_flashdata('success_message', 'Password Reset Instructions sent to your Email.');
-		redirect('Home/ForgetPassword');
+		redirect('ForgetPassword');
 	}
 
 	public function reset_userpassword_page()
@@ -1288,25 +1336,25 @@ class Home extends CI_Controller
 		$name = $this->input->post('name');
 		$email = $this->input->post('email');
 
-	   // Validate reCAPTCHA
-	   $captcha_response = $this->input->post('g-recaptcha-response');
-	   if (empty($captcha_response)) {
-		   $this->session->set_flashdata('error_message', 'Please complete the reCAPTCHA.');
-		   redirect('home/waitlist');
-		   return;
-	   }
-   
-	   // Verify reCAPTCHA
-	   $recaptcha_secret_key = '6LelCKYpAAAAADhYZpodlrvvUzeW7SC6k3yBl7zJ';
-	   $recaptcha_response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret_key}&response={$captcha_response}");
-	   $responseKeys = json_decode($recaptcha_response, true);
-   
-	   // Check if reCAPTCHA verification was successful
-	   if (intval($responseKeys["success"]) !== 1) {
-		   $this->session->set_flashdata('error_message', 'reCAPTCHA verification failed. Please try again.');
-		   redirect('home/waitlist');
-		   return;
-	   }
+		// Validate reCAPTCHA
+		$captcha_response = $this->input->post('g-recaptcha-response');
+		if (empty($captcha_response)) {
+			$this->session->set_flashdata('error_message', 'Please complete the reCAPTCHA.');
+			redirect('home/waitlist');
+			return;
+		}
+
+		// Verify reCAPTCHA
+		$recaptcha_secret_key = '6LelCKYpAAAAADhYZpodlrvvUzeW7SC6k3yBl7zJ';
+		$recaptcha_response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret_key}&response={$captcha_response}");
+		$responseKeys = json_decode($recaptcha_response, true);
+
+		// Check if reCAPTCHA verification was successful
+		if (intval($responseKeys["success"]) !== 1) {
+			$this->session->set_flashdata('error_message', 'reCAPTCHA verification failed. Please try again.');
+			redirect('home/waitlist');
+			return;
+		}
 
 		$apiLink = 'waitlist/add-to-waitlist';
 		$baseUrl = 'https://uatdd.virtualglobetechnology.com'; // Base URL
@@ -1555,25 +1603,25 @@ class Home extends CI_Controller
 			// }
 
 
-			 // Verify reCAPTCHA
-			 $captcha_response = $this->input->post('g-recaptcha-response');
-			 if (empty($captcha_response)) {
-				 $this->session->set_flashdata('error_message', 'Please complete the reCAPTCHA.');
-				 redirect('Home/investor');
-				 return;
-			 }
-	 
-			 $recaptcha_secret_key = '6LelCKYpAAAAADhYZpodlrvvUzeW7SC6k3yBl7zJ'; 
-			 $recaptcha_response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret_key}&response={$captcha_response}");
-			 $responseKeys = json_decode($recaptcha_response, true);
-	 
-			 if (intval($responseKeys["success"]) !== 1) {
-				 $this->session->set_flashdata('error_message', 'reCAPTCHA verification failed. Please try again.');
-				 redirect('Home/investor');
-				 return;
-			 }
+			// Verify reCAPTCHA
+			$captcha_response = $this->input->post('g-recaptcha-response');
+			if (empty($captcha_response)) {
+				$this->session->set_flashdata('error_message', 'Please complete the reCAPTCHA.');
+				redirect('Home/investor');
+				return;
+			}
 
-			 
+			$recaptcha_secret_key = '6LelCKYpAAAAADhYZpodlrvvUzeW7SC6k3yBl7zJ';
+			$recaptcha_response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret_key}&response={$captcha_response}");
+			$responseKeys = json_decode($recaptcha_response, true);
+
+			if (intval($responseKeys["success"]) !== 1) {
+				$this->session->set_flashdata('error_message', 'reCAPTCHA verification failed. Please try again.');
+				redirect('Home/investor');
+				return;
+			}
+
+
 			$ok = $this->sendmeetingdata($name, $email, $title, $city, $duration, $fromTime, $toTime);
 
 			//  echo"<pre>";
@@ -1636,4 +1684,20 @@ class Home extends CI_Controller
 			return false; // Return false if there's a failure response
 		}
 	}
+
+	// public function header() {
+	// 	$data['userFirstName'] = 'John'; // Example user name
+	// 	$this->load->view('header_view', $data);
+	// }
+
+
+	// public function profile() {
+	//     $data['first_name'] = $this->session->userdata('first_name'); // Retrieve user's first name
+	//     $data['last_name'] = $this->session->userdata('last_name'); // Retrieve user's last name
+
+	//     // Load the profile view with necessary data
+	//     $this->load->view('profile_view', $data);
+	// }
+
+
 }
