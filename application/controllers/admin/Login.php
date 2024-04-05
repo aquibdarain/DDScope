@@ -55,7 +55,7 @@ class Login extends CI_Controller
 		// print_r($_POST);exit;
 		// $apiLink = '/api/planner/login'; 
 		$apiLink = 'web/admin/login'; 
-
+// print_r($apiLink);exit;
 		$admin_useremail = $this->input->post('admin_useremail');
 		$admin_password = $this->input->post('admin_password');
 
@@ -73,7 +73,7 @@ class Login extends CI_Controller
 			);
 			
 			 $post_data = json_encode($dataArray);
-			//  print_r($post_data);
+			//  print_r($post_data);exit;
 	
 			 $response = callApi($apiLink, $post_data);
 			//  print_r($response);exit;
