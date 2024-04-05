@@ -1,20 +1,25 @@
-<?php include("application/views/header_view.php"); ?>
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+?>
+<?php $this->load->view('header_view'); ?>
+<?php echo form_hidden('g-recaptcha-response', ''); ?>
+
+
 <style>
   .contactpage-form {
-    top: 0;
-    right: 0px;
     position: relative;
     background: #fff;
-    padding: 10px 30px 20px;
+    padding: 20px;
     margin: 2px;
   }
 
-  img {
-    max-width: 110%;
+  @media (max-width: 992px) {
+    .contactpage-form {
+      margin: 2px 10px;
+    }
   }
 </style>
 
-<section class="innerbanner"></section>
 <section class="bg-con">
   <div class="container">
     <div class="row mt-5 mb-5">
@@ -24,48 +29,53 @@
             <img src="<?php echo base_url('assets/images/enquiry.png'); ?>" alt="" />
           </div>
           <div class="col-lg-6">
-            <div class="alert alert-success alert-dismissible fade show" id="successAlert" style="
-                  top: 0;
-                  right: 60px;
-                  position: relative;
-                  display: none;
-                " role="alert">
-              <strong>Thank you for submitting your inquiry!</strong> We
-              appreciate your interest in our services. Our team will review
-              your request and get back to you shortly.
-              <button type="button" class="btn-close"></button>
-            </div>
-            <div class="contactpage-form shadow rounded">
-              <h2 class="mb-0">Enquire Now</h2>
-              <span class="d-block fs-6 mb-4">Leave us a message for futher Information</span>
+            <!-- Display validation errors quickly -->
+            <?php if (validation_errors()) : ?>
+              <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-right: 60px;margin-left: -60px">
+                <?php echo validation_errors(); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <?php endif; ?>
+            <!-- Display success message if form is submitted successfully -->
+            <?php if ($this->session->flashdata('success_message')) : ?>
+              <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-right: 60px;margin-left: -60px">
+                <?php echo $this->session->flashdata('success_message'); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <?php endif; ?>
 
-              <form class="row g-3">
-                <div class="col-lg-6 position-relative">
-                  <label for="validationDefault01" class="form-label">Name</label>
-                  <input type="text" class="form-control" name="name" id="validationDefault01" value="" required onkeydown="return /^[A-Za-z\s]+$/i.test(event.key)" />
-                  <span id="nameError" class="text-danger" style="display: none">Please enter valid name</span>
-                </div>
-                <div class="col-lg-6" class="col-lg-6 position-relative">
-                  <label for="validationDefault02" class="form-label">Mobile Number</label>
-                  <input type="tel" class="form-control" name="number" id="validationDefault02" value="" required onkeydown="return onlyNumbers(event)" />
-                  <span id="phoneError" class="text-danger" style="display: none">Please enter valid phone number</span>
-                </div>
-                <div class="col-lg-12 position-relative">
-                  <label for="validationDefault03" class="form-label">Email</label>
-                  <input type="text" class="form-control" name="email" id="validationDefault03" value="" required />
-                  <span id="emailError" class="text-danger" style="display: none">Please enter valid email</span>
-                </div>
-                <div class="col-lg-12 position-relative">
-                  <label for="validationDefault03" class="form-label">Message</label>
-                  <textarea class="form-control" name="message" rows="4" required></textarea>
-                  <span id="messageError" class="text-danger" style="display: none">Please enter message</span>
-                </div>
-                <div class="col-lg-12">
-                  <span id="submitEnquiry" class="btn enquir-btn">
-                    SUBMIT
-                  </span>
-                </div>
-              </form>
+            <div class="contactpage-form shadow rounded">
+              <h2 class="mb-0" style="color: #1D4E66;">Enquire Now</h2>
+              <span class="d-block fs-6 mb-4">Leave us a message for further Information</span>
+
+              <!-- Form with CodeIgniter form_open and form_close -->
+              <?php echo form_open('Home/enquire', array('class' => 'row g-3')); ?>
+              <div class="col-lg-6 position-relative">
+                <label for="validationDefault01" class="form-label">Name</label>
+                <?php echo form_input(array('type' => 'text', 'name' => 'name', 'id' => 'validationDefault01', 'class' => 'form-control', 'required' => 'required')); ?>
+              </div>
+              <div class="col-lg-6 position-relative">
+                <label for="validationDefault02" class="form-label">Mobile Number</label>
+                <?php echo form_input(array('type' => 'tel', 'name' => 'number', 'id' => 'validationDefault02', 'class' => 'form-control', 'required' => 'required')); ?>
+              </div>
+              <div class="col-lg-12 position-relative">
+                <label for="validationDefault03" class="form-label">Email</label>
+                <?php echo form_input(array('type' => 'email', 'name' => 'email', 'id' => 'validationDefault03', 'class' => 'form-control', 'required' => 'required')); ?>
+              </div>
+              <div class="col-lg-12 position-relative">
+                <label for="validationDefault03" class="form-label">Message</label>
+                <?php echo form_textarea(array('name' => 'message', 'rows' => '4', 'class' => 'form-control', 'required' => 'required')); ?>
+              </div>
+              <div class="form-group">
+                <div class="g-recaptcha" data-sitekey="6LelCKYpAAAAAHKFwH7w6ALStffm_X-vz2qH_xeU" required></div>
+                <span id="recaptchaError" style="color: red; display: <?php echo form_error('g-recaptcha-response') ? 'block' : 'none'; ?>"><?php echo form_error('g-recaptcha-response'); ?></span>
+              </div>
+
+              <div class="col-lg-12">
+                <?php echo form_submit(array('class' => 'btn enquir-btn', 'style' => 'background-color: #1D4E66; color: white;'), 'SUBMIT'); ?>
+              </div>
+              <?php echo form_close(); ?>
+
             </div>
           </div>
         </div>
@@ -74,6 +84,7 @@
   </div>
   <div class="row"></div>
 </section>
+
 <footer class="footer-section">
   <div class="container">
     <div class="row">
@@ -83,8 +94,8 @@
           <a href="<?php echo base_url('Home/vision'); ?>">Our vision</a> |
           <a href="<?php echo base_url('Home/career'); ?>">Careers</a> |
           <a href="<?php echo base_url('Home/video'); ?>">Videos</a> |
-          <a href="<?php echo base_url('Home/ads'); ?>">Ads</a>|
-          <a href="<?php echo base_url('Home/policy'); ?>">Privacy Policy </a>
+          <a href="<?php echo base_url('Home/ads'); ?>">Ads</a> |
+          <a href="<?php echo base_url('Home/policy'); ?>">Privacy Policy</a>
         </p>
         <p>contact@dozendiamonds.com</p>
         <p>Copyright © 2023 DozenDiamonds. All Rights Reserved.</p>
@@ -92,163 +103,91 @@
     </div>
   </div>
 </footer>
-<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js'); ?>"></script>
 
-<script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.4.1.min.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo base_url('assets/js/venobox.min.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js'); ?>"></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<!-- JavaScript for sending mail -->
 <script>
   $(document).ready(function() {
-    $(".venobox").venobox({
-      closeColor: "#f4f4f4",
-      spinColor: "#f4f4f4",
-      arrowsColor: "#f4f4f4",
-      closeBackground: "#17191D",
-      overlayColor: "rgba(23,25,29,0.8)",
-    });
+    // Function to validate email
+    function IsEmail(email) {
+      var regex =
+        /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      if (!regex.test(email)) {
+        return false;
+      } else {
+        return true;
+      }
+    }
 
-    $("#validationDefault02").keydown(function(e) {
-      if (
-        $.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-        (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
-        (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
-        (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
-        e.keyCode === 86 ||
-        (e.keyCode >= 35 && e.keyCode <= 39)
-      ) {
+    // Function to validate phone number
+    function validPhoneNumber(number) {
+      const numberRegex = /^[0-9]+$/;
+      if (numberRegex.test(number) && number.length === 10) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    // Handle form submission
+    $('form').submit(function(e) {
+      e.preventDefault();
+
+      // Get form data
+      var formData = $(this).serializeArray();
+      var requestData = {};
+
+      // Convert form data to object
+      formData.forEach(function(input) {
+        requestData[input.name] = input.value;
+      });
+
+      // Validate email and phone number
+      if (!IsEmail(requestData.email)) {
+        // Handle invalid email
+        alert('Please enter a valid email address.');
         return;
       }
-      if (
-        (e.shiftKey || e.keyCode < 48 || e.keyCode > 57) &&
-        (e.keyCode < 96 || e.keyCode > 105)
-      ) {
-        e.preventDefault();
-      }
-    });
 
-    $(".btn-close").click(function() {
-      $("#successAlert").hide();
-    });
-
-    $("input[name='name']").click(function() {
-      $("#nameError").hide();
-    });
-
-    $("input[name='email']").click(function() {
-      $("#emailError").hide();
-    });
-
-    $("input[name='number']").click(function() {
-      $("#phoneError").hide();
-    });
-
-    $("textarea[name='message']").click(function() {
-      $("#messageError").hide();
-    });
-
-    $("#submitEnquiry").on('click', function() {
-      var inputName = $("input[name='name']").val();
-      var inputEmail = $("input[name='email']").val();
-      var inputNumber = $("input[name='number']").val();
-      var inputMessage = $("textarea[name='message']").val();
-
-      function IsEmail(email) {
-        var regex =
-          /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-        if (!regex.test(email)) {
-          return false;
-        } else {
-          return true;
-        }
+      if (!validPhoneNumber(requestData.number)) {
+        // Handle invalid phone number
+        alert('Please enter a valid phone number.');
+        return;
       }
 
-      function validPhoneNumber() {
-        const numberRegex = /^[0-9]+$/;
-        if (numberRegex.test(inputNumber) && inputNumber.length === 10) {
-          return true;
-        } else {
-          $("#phoneError").show();
-          return false;
-        }
-      }
+      // Add authorization token to request headers
+      var headers = new Headers();
+      headers.append('Authorization', '<?php echo $token; ?>');
+      headers.append('Content-Type', 'application/json');
 
-
-      function validEmail() {
-        if (IsEmail(inputEmail) == false) {
-          $("#emailError").show();
-          return false;
-        } else {
-          return true;
-        }
-      }
-
-      function validName() {
-        const alphabetRegex = /^[A-Za-z\s]+$/;
-        if (alphabetRegex.test(inputName) && inputName.length < 30) {
-          return true;
-        } else {
-          $("#nameError").show();
-          return false;
-        }
-      }
-
-      function validMessage() {
-        if (inputMessage.length < 1) {
-          $("#messageError").show();
-          return false;
-        } else {
-          return true;
-        }
-      }
-
-      var phoneValidation = validPhoneNumber();
-      var emailValidation = validEmail();
-      var nameValidation = validName();
-      var messageValidation = validMessage();
-
-      if (phoneValidation && emailValidation && nameValidation && messageValidation) {
-        // Prepare data for the fetch request
-        var requestData = {
-          email: inputEmail,
-          number: inputNumber,
-          message: inputMessage,
-          name: inputName,
-        };
-
-        // Send the data to the server
-        fetch('https://uatdd.virtualglobetechnology.com/web/user/submit-message', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData),
-          })
-          .then(response => response.json())
-          .then(data => {
-            // Handle the response data
-            if (data.status) {
-              // Successful response
-              $("#successAlert").show();
-              // Form value to empty
-              $("input[name='name']").val("");
-              $("input[name='email']").val("");
-              $("input[name='number']").val("");
-              $("textarea[name='message']").val("");
-
-              setTimeout(() => {
-                $("#successAlert").hide();
-              }, 10000);
-            }
-          })
-          .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-          });
-      }
+      // Send data using fetch API
+      fetch('https://uatdd.virtualglobetechnology.com/web/user/submit-message', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(requestData)
+        })
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          if (data.status) {
+            // Show success message
+            alert('Your enquiry has been submitted successfully!');
+            // Reset form
+            $('form')[0].reset();
+          } else {
+            // Show error message
+            alert('Failed to submit enquiry. Please try again later.');
+          }
+        })
+        .catch(function(error) {
+          console.error('Error:', error);
+        });
     });
   });
 </script>
-
-
-<!--     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>-->
 </body>
 
 </html>
