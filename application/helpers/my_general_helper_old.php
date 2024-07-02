@@ -72,6 +72,11 @@ if ( ! function_exists('decrypt_id'))
 		}
 	}
 
+if (!defined('ApiAddress')) {
+    define('ApiAddress', 'https://uatdd.virtualglobetechnology.com/');
+}
+
+
 	if (!function_exists('callApi')) {
 		function callApi($apiLink, $post_data)
 		{
@@ -127,7 +132,7 @@ if ( ! function_exists('decrypt_id'))
 		{
 			$CI = &get_instance();
 	
-			define('ApiAddress', 'https://uatdd.virtualglobetechnology.com/');
+			//define('ApiAddress', 'https://uatdd.virtualglobetechnology.com/');
 	
 			// Get API token
 			$TokenData = tokenkey();

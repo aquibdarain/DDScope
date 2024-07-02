@@ -1,8 +1,15 @@
-<?php include("application/views/header_view.php");?>
- 
+<?php include("application/views/header_view.php"); ?>
 
-<section class="innerbanner">
-    <section class="bg-con">
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<main class="align-self-center">
+         
+<section class="bg-con">
         <div class="container">
             <div class="row mt-5 mb-5">
                 <div class="col-lg-12">
@@ -63,47 +70,51 @@
                                             }, 50000);
                                         });
                                     </script>
-                                     <form class="row g-3" action="<?php echo base_url('Home/forgetpassnew');?>" method="post" onsubmit="return validateForm()">
-                                        <div class="col-lg-12 position-relative">
-                                            <label for="validationDefault03" class="form-label">New Password<span style="color: red;">*</span></label>
-                                            <div class="input-group">
-                                                <input type="password" class="form-control" name="password" id="passwordInput" value="" required oninput="validatePasswordFormat(this)" />
-                                                <style>
-                                                    #togglePasswordButton:hover {
-                                                        background-color: #ffffff !important;
-                                                    }
-                                                </style><button type="button" id="togglePasswordButton" class="btn btn-outline-secondary" onclick="togglePassword('passwordInput', 'togglePasswordButton')">
-                                                    <img style="height: 30px;" src="<?php echo base_url('images/closeE.jpg');?>" alt="close-eye-icon">
-                                                </button>
-                                            </div>
-                                            <span id="passwordError" class="text-danger" style="display: none">Password must contain: at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.</span>
-                                        </div>
+                                    <?php echo form_open('Home/forgetpassnew'); ?>
+    <div class="col-lg-12 position-relative">
+        <label for="validationDefault03" class="form-label">New Password<span style="color: red;">*</span></label>
+        <div class="input-group">
+            <input type="password" class="form-control" name="password" id="passwordInput" value="" required oninput="validatePasswordFormat(this)" />
+            <style>
+                #togglePasswordButton:hover {
+                    background-color: #ffffff !important;
+                }
+            </style>
+            <button type="button" id="togglePasswordButton" class="btn btn-outline-secondary" onclick="togglePassword('passwordInput', 'togglePasswordButton')">
+                <img style="height: 30px;" src="<?php echo base_url('images/closeE.jpg');?>" alt="close-eye-icon">
+            </button>
+        </div>
+        <span id="passwordError" class="text-danger" style="display: none">Password must contain: at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.</span>
+    </div>
 
-                                        <div class="col-lg-12 position-relative">
-                                            <label for="validationDefault03" class="form-label">Confirm Password<span style="color: red;">*</span></label>
-                                            <div class="input-group">
-                                                <input type="password" class="form-control" name="conf-password" id="confPasswordInput" value="" required oninput="confirmPasswordMatch(this)" />
-                                                <style>
-                                                    #toggleConfPasswordButton:hover {
-                                                        background-color: #ffffff !important;
-                                                    }
-                                                </style><button type="button" id="toggleConfPasswordButton" class="btn btn-outline-secondary" onclick="togglePassword('confPasswordInput', 'toggleConfPasswordButton')">
-                                                    <img style="height: 30px;" src="<?php echo base_url('images/closeE.jpg');?>" alt="close-eye-icon">
-                                                </button>
-                                            </div>
-                                            <span id="passwordConfError" class="text-danger" style="display: none">Passwords must match.</span>
-                                        </div>
-                                        <input type="hidden" name="token" value="<?php echo isset($_GET['token']) ? htmlspecialchars($_GET['token']) : ''; ?>">
+    <div class="col-lg-12 position-relative">
+        <label for="validationDefault03" class="form-label">Confirm Password<span style="color: red;">*</span></label>
+        <div class="input-group">
+            <input type="password" class="form-control" name="conf-password" id="confPasswordInput" value="" required oninput="confirmPasswordMatch(this)" />
+            <style>
+                #toggleConfPasswordButton:hover {
+                    background-color: #ffffff !important;
+                }
+            </style>
+            <button type="button" id="toggleConfPasswordButton" class="btn btn-outline-secondary" onclick="togglePassword('confPasswordInput', 'toggleConfPasswordButton')">
+                <img style="height: 30px;" src="<?php echo base_url('images/closeE.jpg');?>" alt="close-eye-icon">
+            </button>
+        </div>
+        <span id="passwordConfError" class="text-danger" style="display: none">Passwords must match.</span>
+    </div>
+    <input type="hidden" name="token" value="<?php echo isset($_GET['token']) ? htmlspecialchars($_GET['token']) : ''; ?>">
+                <br>
+    <div class="col-lg-12">
+        <button type="submit" class="btn enquir-btn" id="submitEnquiry" style="background-color: blue; color: white;">SUBMIT</button>
+    </div>
 
-                                        <div class="col-lg-12">
-                                            <button type="submit" class="btn enquir-btn" id="submitEnquiry">SUBMIT</button>
-                                        </div>
-                                        <div>
-                                            <span>
-                                                Don't have an account? <a href="<?php echo base_url('Home/signup');?>" style="color: #2f73b2;">Sign Up</a>
-                                            </span>
-                                        </div>
-                                    </form>
+    <div>
+        <span>
+            Don't have an account? <a href="<?php echo base_url('Home/signup');?>" style="color: #2f73b2;">Sign Up</a>
+        </span>
+    </div>
+<?php echo form_close(); ?>
+
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -111,9 +122,15 @@
                 </div>
             </div>
         </div>
-    </section>
-</section>
-<script>
+    </section>    
+  
+
+</main>
+
+<?php include("application/views/footer.php"); ?>
+
+ 
+    <script>
     function validateForm() {
         var isPasswordValid = validatePasswordFormat(document.getElementById("passwordInput"));
         var doPasswordsMatch = confirmPasswordMatch(document.getElementById("confPasswordInput"));
@@ -152,26 +169,6 @@
         }
     }
 </script>
- 
-<footer class="footer-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <p>
-                    <a href="<?php echo base_url('');?>">Home</a> |
-                    <a href="<?php echo base_url('Home/vision');?>">Our vision</a> |
-                    <a href="<?php echo base_url('Home/career');?>">Careers</a> |
-                    <a href="<?php echo base_url('Home/video');?>">Videos</a> |
-                    <a href="<?php echo base_url('Home/ads');?>">Ads</a>|
-                    <a href="<?php echo base_url('Home/policy');?>">Privacy Policy </a>
-                </p>
-                <p>contact@dozendiamonds.com</p>
-                <p>Copyright © 2023 DozenDiamonds. All Rights Reserved.</p>
-            </div>
-        </div>
-    </div>
-</footer>
 
-</body>
-
+  </body>
 </html>

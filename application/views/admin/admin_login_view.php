@@ -61,7 +61,7 @@
                                         <h4>Administrator Login</h4>
                                     </center>
                                     <div class="text-center">
-                                        <center><img alt="User Avatar" class="rectangle" src="<?= base_url('images/dozendiamond_new1.png'); ?>" style="width: 200px; height: 80px;"></center>
+                                        <center><img alt="User Avatar" class="rectangle" src="<?= base_url('images/logo.png'); ?>" style="width: 200px; height: 80px;"></center>
                                     </div>
                                 </div>
                                 <div class="card-body text-center">

@@ -53,3 +53,24 @@ $route['default_controller'] = 'Home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['admin'] = 'admin/login';
+
+// Custom route to handle unwanted data
+// $route['(:any)'] = function ($slug) {
+//     if (preg_match('/^[a-zA-Z0-9]+$/', $slug)) {
+//         return 'home/errorPage';
+//     } else {
+//         return $slug;
+//     }
+// };
+
+// $route['(:any)'] = function ($slug) {
+//     // Check if the segment after the base URL is unwanted data
+//     // Including spaces as well
+//     if (preg_match('%/^[a-zA-Z0-9\s]+$/%', $slug)) {
+//         // Unwanted data, redirect to error page
+//         return 'home/errorPage';
+//     } else {
+//         // Otherwise, route to the appropriate controller
+//         return $slug;
+//     }
+// };

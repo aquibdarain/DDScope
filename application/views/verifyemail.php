@@ -1,8 +1,14 @@
-<?php include("application/views/header_view.php");?>
- 
+<?php include("application/views/header_view.php"); ?>
 
-<section class="innerbanner">
-    <section class="bg-con">
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<main class="align-self-center">
+<section class="bg-con">
         <div class="container">
             <div class="row mt-5 mb-5">
                 <div class="col-lg-12">
@@ -83,7 +89,53 @@
             </div>
         </div>
     </section>
-</section>
+    
+  
+
+</main>
+
+<?php include("application/views/footer.php"); ?>
+
+
+<div id="back-top"><a href="#top"><span></span></a> </div>
+
+    <script src="<?php echo base_url('js/jquery-3.6.0.min.js')?>"></script>
+
+
+    <!--Bootstrap Bundle with Popper -->
+    <script src="<?php echo base_url('js/bootstrap.bundle.min.js')?>"></script>
+
+    <script src="<?php echo base_url('js/topscroll.js')?>"></script>
+    <script src="<?php echo base_url('source/jquery.fancybox.js?v=2.1.5')?>"></script><!-- Fancy Box Popup -->
+    <script src="<?php echo base_url('js/scrolla.jquery.min.js')?>"></script><!--Animate JS-->
+    <script src="<?php echo base_url('js/menu-script.js')?>"></script><!--Navigation menu-->
+    <script src="<?php echo base_url('js/wow.min.js')?>"></script>
+
+    <script src="<?php echo base_url('js/owl.carousel.min.js')?>"></script>
+
+
+    <!-- loading -->
+<script>
+
+  window.onload = function() {
+      // Page and resources are fully loaded, execute your code
+      $(".se-pre-con").fadeOut("slow");
+  };
+
+
+</script>
+
+<script>
+  $('.fadeOut').owlCarousel({
+    animateOut: 'fadeOut',
+    animateIn: 'fadeIn',
+    items:1,
+    smartSpeed:450,
+    loop:true,
+    autoplay:true,
+    dots:false
+});
+</script>
 <script>
     function validateForm() {
         var isPasswordValid = validatePasswordFormat(document.getElementById("passwordInput"));
@@ -123,26 +175,9 @@
         }
     }
 </script>
- 
-<footer class="footer-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <p>
-                    <a href="<?php echo base_url('');?>">Home</a> |
-                    <a href="<?php echo base_url('Home/vision');?>">Our vision</a> |
-                    <a href="<?php echo base_url('Home/career');?>">Careers</a> |
-                    <a href="<?php echo base_url('Home/video');?>">Videos</a> |
-                    <a href="<?php echo base_url('Home/ads');?>">Ads</a>|
-                    <a href="<?php echo base_url('Home/policy');?>">Privacy Policy </a>
-                </p>
-                <p>contact@dozendiamonds.com</p>
-                <p>Copyright © 2023 DozenDiamonds. All Rights Reserved.</p>
-            </div>
-        </div>
-    </div>
-</footer>
 
-</body>
+    <script src="<?php echo base_url('js/main.js')?>"></script>
+    
 
+  </body>
 </html>

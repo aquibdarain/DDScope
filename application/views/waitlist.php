@@ -1,141 +1,99 @@
 <?php include("application/views/header_view.php"); ?>
 
-<style>
-    .contactpage-form {
-        top: 30px;
-        right: 0px;
-        position: relative;
-        background: #fff;
-        padding: 10px 30px 20px;
-        margin: 2px;
-    }
+<br><br><br><br><br><br>
 
-    /* img {
-        max-width: 100%;
-    } */
+<!-- <section class="innerbanner ">
+</section> -->
 
-    @media (max-width: 992px) {
 
-        .contactpage-form {
-            top: 0;
-            right: 0px;
-            position: relative;
-            background: #fff;
-            padding: 10px 30px 20px;
-            margin: 2px;
-            margin-left: 10px;
-            margin-right: 10px;
+<main class="align-self-center">
+    <!-- <section class="bg-con"> -->
 
-        }
-    }
-</style>
-<section class="innerbanner"></section>
-<section class="bg-con">
-    <div class="container">
-        <div class="row mt-5 mb-5">
-            <div class="col-lg-12">
-                <div class="row mb-5">
-                    <div class="col-lg-6">
-                        <img src="<?php echo base_url('images/signin-img.jpg'); ?>" alt="" />
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="alert alert-success alert-dismissible fade show" id="successAlert" style="
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <div class="row mb-5">
+                        <div class="col-lg-6">
+                            <img src="<?php echo base_url('images/signin-img.jpg'); ?>" alt="" class="img-fluid d-block mx-auto">
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="alert alert-success alert-dismissible fade show" id="successAlert" style="
                             top: 0;
                             right: 60px;
                             position: relative;
                             display: none;
                         " role="alert">
-                            <button type="button" class="btn-close"></button>
-                        </div>
-
-                        <div class="contactpage-form shadow rounded">
-                            <h2 class="mb-0" style="color: #1D4E66;">WaitList Form</h2>
-                            <?php
-                            $success_message = $this->session->flashdata('success_message');
-                            $error_message = $this->session->flashdata('error_message');
-
-                            if (!empty($success_message)) {
-                                echo '<div class="alert alert-success">' . $success_message . '</div>';
-                            } elseif (!empty($error_message)) {
-                                echo '<div class="alert alert-danger">' . $error_message . '</div>';
-                            }
-                            ?>
-                            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-                            <script>
-                                $(document).ready(function() {
-                                    setTimeout(function() {
-                                        $('.alert').fadeOut('slow');
-                                    }, 100000);
-                                });
-                            </script>
-                            <?= form_open('Home/waitlist_submit', array('class' => 'row g-3', 'onsubmit' => 'return validateForm()')); ?>
-                            <div class="col-lg-12 position-relative mt-4">
-                                <label for="validationDefault03" class="form-label">Full Name<span style="color: red;">*</span></label>
-                                <?= form_input(array('type' => 'text', 'name' => 'name', 'id' => 'validationDefault03', 'class' => 'form-control', 'required' => 'required')); ?>
-                                <!-- <span id="nameError" class="text-danger" style="display: none">Please enter a valid name (at least 3 characters)</span> -->
+                                <button type="button" class="btn-close"></button>
                             </div>
 
-                            <div class="col-lg-12 position-relative">
-                                <label for="validationDefault04" class="form-label">Email<span style="color: red;">*</span></label>
-                                <?= form_input(array('type' => 'email', 'name' => 'email', 'id' => 'validationDefault04', 'class' => 'form-control', 'required' => 'required')); ?>
-                                <!-- <span id="emailError" class="text-danger" style="display: none">Please enter a valid email</span> -->
-                            </div>
+                            <div class="contactpage-form shadow rounded">
+                                <h2 class="mb-0" style="color: #1D4E66;">WaitList Form</h2>
+                                <?php
+                                $success_message = $this->session->flashdata('success_message');
+                                $error_message = $this->session->flashdata('error_message');
 
-                            <div class="form-group">
-                                <div class="g-recaptcha" data-sitekey="6LelCKYpAAAAAHKFwH7w6ALStffm_X-vz2qH_xeU" required></div>
+                                if (!empty($success_message)) {
+                                    echo '<div class="alert alert-success">' . $success_message . '</div>';
+                                } elseif (!empty($error_message)) {
+                                    echo '<div class="alert alert-danger">' . $error_message . '</div>';
+                                }
+                                ?>
+                                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+                                <script>
+                                    $(document).ready(function() {
+                                        setTimeout(function() {
+                                            $('.alert').fadeOut('slow');
+                                        }, 100000);
+                                    });
+                                </script>
+                                <!--<form action="https://dozendiamonds.com/Home/waitlist_submit" class="row g-3" onsubmit="return validateForm()" method="post" accept-charset="utf-8">-->
+
+                                <?php echo form_open('Home/waitlist_submit', array('class' => 'row g-3', 'onsubmit' => 'return validateForm()')); ?>
+
+                                <div class="col-lg-12 position-relative mt-4">
+                                    <label for="validationDefault03" class="form-label">Full Name<span style="color: red;">*</span></label>
+
+                                    <?php echo form_input(array('type' => 'text', 'name' => 'name', 'id' => 'validationDefault03', 'class' => 'form-control', 'required' => 'required')); ?>
+
+                                    <!--</?= form_input(array('type' => 'text', 'name' => 'name', 'id' => 'validationDefault03', 'class' => 'form-control', 'required' => 'required')); ?>
+                                 <span id="nameError" class="text-danger" style="display: none">Please enter a valid name (at least 3 characters)</span> -->
+                                </div>
+
+                                <div class="col-lg-12 position-relative">
+                                    <label for="validationDefault04" class="form-label">Email<span style="color: red;">*</span></label>
+                                    <?php echo form_input(array('type' => 'email', 'name' => 'email', 'id' => 'validationDefault04', 'class' => 'form-control', 'required' => 'required')); ?>
+                                    <!-- <span id="emailError" class="text-danger" style="display: none">Please enter a valid email</span> -->
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="g-recaptcha" data-sitekey="6LelCKYpAAAAAHKFwH7w6ALStffm_X-vz2qH_xeU" required></div>
+                                    <span id="recaptchaError" style="color: red; display: none;">Please complete the reCAPTCHA.</span>
+                                </div>
+
+                                <!---<div class="form-group">
+                                <div class="g-recaptcha" data-sitekey="6LelCKYpAAAAAHKFwH7w6ALStffm_X-vz2qH_xeU" required>
+								<div style="width: 304px; height: 78px;"><div><iframe title="reCAPTCHA" width="304" height="78" role="presentation" name="a-vsyqwcmq5i6c" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" src="https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6LelCKYpAAAAAHKFwH7w6ALStffm_X-vz2qH_xeU&amp;co=aHR0cHM6Ly9kb3plbmRpYW1vbmRzLmNvbTo0NDM.&amp;hl=en&amp;v=V6_85qpc2Xf2sbe3xTnRte7m&amp;size=normal&amp;cb=a6evzsj9gjp5"></iframe></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;"></iframe></div>
+								
                                 <span id="recaptchaError" style="color: red; display: none;">Please complete the reCAPTCHA.</span>
-                            </div>
+                            </div>-->
 
-
-                            <div class="col-lg-12">
-                                <?= form_submit(array('class' => 'btn btn-primary enquir-btn', 'id' => 'submitButton', 'style' => 'background-color: #1D4E66;'), 'SUBMIT'); ?>
+                                <div class="col-lg-12">
+                                    <?php echo form_submit(array('class' => 'btn btn-primary enquir-btn', 'id' => 'submitButton', 'style' => 'background-color: #1D4E66;'), 'SUBMIT'); ?>
+                                </div>
+                                <?php echo form_close(); ?>
                             </div>
-                            <?= form_close(); ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row"></div>
 
+    <!-- </section> -->
+    </section>
 
-    <!-- Enquiry button code start from here -->
-    <!-- <div class="floating-button">
+</main>
 
-        <a href="<?php echo base_url('Home/enquire'); ?>">
-            <button type="button" class="btn enquire-btn custom-enquire-btn sticky-btn">
-                Enquire Now
-            </button>
-        </a>
-
-    </div>
-
-    <style>
-        .custom-enquire-btn {
-            background-color: #1D4E66;
-            color: white;
-            margin-top: 412px;
-            border-radius: 100px;
-            font-weight: 600;
-            position: fixed;
-            /* Add padding to increase the clickable area */
-            padding: 10px 20px;
-            /* Add transition for smooth effect */
-            transition: border-color 0.3s ease;
-            /* Initial border color */
-            border: 2px solid transparent;
-        }
-
-        .custom-enquire-btn:hover {
-            border-color: black;
-        }
-    </style> -->
-    <!-- Enquiry button code end here -->
-
-</section>
-<!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
 <script>
     function validateForm() {
         var isValid = true;
@@ -189,218 +147,51 @@
     }
 </script>
 
-
-<footer class="footer-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <p>
-                    <a href="<?php echo base_url(''); ?>">Home</a> |
-                    <a href="<?php echo base_url('Home/vision'); ?>">Our vision</a> |
-                    <a href="<?php echo base_url('Home/career'); ?>">Careers</a> |
-                    <a href="<?php echo base_url('Home/video'); ?>">Videos</a> |
-                    <a href="<?php echo base_url('Home/ads'); ?>">Ads</a>|
-                    <a href="<?php echo base_url('Home/policy'); ?>">Privacy Policy </a>
-                </p>
-                <p>contact@dozendiamonds.com</p>
-                <p>Copyright © 2023 DozenDiamonds. All Rights Reserved.</p>
-            </div>
-        </div>
-    </div>
-</footer>
-<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js'); ?>"></script>
-<!-- captcha API -->
 <script src='https://www.google.com/recaptcha/api.js'></script>
+<?php include("application/views/footer.php"); ?>
 
 
 
-<!-- <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="venobox.min.js"></script>
-    <script>
+<div id="back-top"><a href="#top"><span></span></a> </div>
 
-          function togglePassword() {
-                const passwordInput = document.getElementById("passwordInput");
-                const toggleButton = document.getElementById("toggleButton");
-
-                if (passwordInput.type === "password") {
-                    passwordInput.type = "text";
-                    // toggleButton.textContent = "Hide";
-                    toggleButton.innerHTML = `<img style="height: 30px;" src="images/openE.png" alt="open-eye-icon">`;
-                } else {
-                    passwordInput.type = "password";
-                    // toggleButton.textContent = "Show";
-                     toggleButton.innerHTML = `<img style="height: 30px;" src="images/closeE.jpg" alt="close-eye-icon">`;
-                }
-            }
-        $(document).ready(function () {
-            $(".venobox").venobox({
-                closeColor: "#f4f4f4",
-                spinColor: "#f4f4f4",
-                arrowsColor: "#f4f4f4",
-                closeBackground: "#17191D",
-                overlayColor: "rgba(23,25,29,0.8)",
-            });
-        });
-
-      
-
-        $(document).ready(function () {
-            $("#validationDefault02").keydown(function (e) {
-                // Allow: backspace, delete, tab, escape, enter and .
-                if (
-                    $.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-                    // Allow: Ctrl/cmd+A
-                    (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
-                    // Allow: Ctrl/cmd+C
-                    (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
-                    // Allow: Ctrl/cmd+X
-                    (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
-                    // Allow ctrl/cmd + v
-                    e.keyCode === 86 ||
-                    // Allow: home, end, left, right
-                    (e.keyCode >= 35 && e.keyCode <= 39)
-                ) {
-                    // let it happen, don't do anything
-                    return;
-                }
-                // Ensure that it is a number and stop the keypress
-                if (
-                    (e.shiftKey || e.keyCode < 48 || e.keyCode > 57) &&
-                    (e.keyCode < 96 || e.keyCode > 105)
-                ) {
-                    e.preventDefault();
-                }
-            });
-             
-            // Close button of alert message
-            $(".btn-close").click(function () {
-                $("#successAlert").hide();
-            });
-
-            // Hide error message on click of respective input field
-           
-            $("input[name='email']").click(function () {
-                $("#emailError").hide();
-            });
-            $("input[name='password']").click(function () {
-                $("#passwordError").hide();
-            });
-
-             
-
-            $("#submitEnquiry").click(function () {
-                
+<script src="<?php echo base_url('js/jquery-3.6.0.min.js'); ?>"></script>
 
 
-                var inputEmail = $("input[name='email']").val();
-                var inputPassword = $("input[name='password']").val();
-                
+<!--Bootstrap Bundle with Popper -->
+<script src="<?php echo base_url('js/bootstrap.bundle.min.js'); ?>"></script>
 
-                function IsEmail(email) {
-                    var regex =
-                        /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-                    if (!regex.test(email)) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
+<script src="<?php echo base_url('js/topscroll.js'); ?>"></script>
+<script src="<?php echo base_url('source/jquery.fancybox.js?v=2.1.5'); ?>"></script><!-- Fancy Box Popup -->
+<script src="<?php echo base_url('js/scrolla.jquery.min.js'); ?>"></script><!--Animate JS-->
+<script src="<?php echo base_url('js/menu-script.js'); ?>"></script><!--Navigation menu-->
+<script src="<?php echo base_url('js/wow.min.js'); ?>"></script>
 
-                function IsValidPassword(password){
-                    var regex=/^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/;
-                     if (!regex.test(password)) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-
-                }
-             
-
-                function validEmail() {
-                    if (IsEmail(inputEmail) == false) {
-                        $("#emailError").show();
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-
-                function validPassword(){
-                    if (IsValidPassword(inputPassword) == false) {
-                        $("#passwordError").show();
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-
-                // Validation check
-                var emailValidation = validEmail();
-                var passwordValidation= validPassword();
-            
-
-                var formData = new FormData();
-               
-                formData.append('web_user_email', inputEmail);
-                formData.append('web_password', inputPassword);
-                console.log(inputEmail, inputPassword)
-
-                if (
-                    emailValidation &&
-                    passwordValidation
-                ) {
-                   
-                    fetch("https://uatdd.virtualglobetechnology.com/web/user/signin",{method:"POST" , body : formData },)
-                    .then(response=> response.json())
-                    .then(
-                        async(data)=>{
-                            
-                            
-                            if(data.status==true){
-                               localStorage.setItem("authToken" ,data.data.token)
-                               localStorage.setItem("user_id" ,data.data.web_user_id)
-                            //   
-                            await renderData(data)
-                                 $("#successAlert").show();
-                                setTimeout(() => { $("#successAlert").hide(); }, 10000);
-                                setTimeout(() => { window.location.href = "notifymepage.html" }, 1000);
-                               
-                                
-                            }
-
-                            if(data.status ==false){
-                                // window.alert(data.message)
-                                 await renderData(data)
-                                $("#successAlert").show();
-                                setTimeout(() => { $("#successAlert").hide(); }, 10000);
-                            }
-                            
-                        console.log(data)
-                    }
-                       
-                        )
-                    .catch((err)=>{
-                        console.log(err)
-                        window.alert(err)
-                    })
-                 function renderData(data) {
-                        console.log("comming from render", data.message)
-                        const messageContainer = document.getElementById('successAlert')
-                        messageContainer.innerHTML = ""
-                        const messageData = document.createElement("strong")
-
-                        messageData.textContent = data.message
-                        messageContainer.appendChild(messageData)
+<script src="<?php echo base_url('js/owl.carousel.min.js'); ?>"></script>
 
 
-                    }
-                
-                }
-            });
-        });
-    </script> -->
-<!--     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>-->
+<!-- loading -->
+<script>
+    window.onload = function() {
+        // Page and resources are fully loaded, execute your code
+        $(".se-pre-con").fadeOut("slow");
+    };
+</script>
+
+<script>
+    $('.fadeOut').owlCarousel({
+        animateOut: 'fadeOut',
+        animateIn: 'fadeIn',
+        items: 1,
+        smartSpeed: 450,
+        loop: true,
+        autoplay: true,
+        dots: false
+    });
+</script>
+
+
+<script src="<?php echo base_url('js/main.js'); ?>"></script>
+
 </body>
 
 </html>

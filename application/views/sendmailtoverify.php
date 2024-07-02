@@ -1,8 +1,11 @@
 <?php include("application/views/header_view.php");?>
  
+<section class="innerbanner ">
+</section>
 
-<section class="innerbanner">
-    <section class="bg-con">
+
+<main class="align-self-center">
+  <section class="bg-con">
         <div class="container">
             <div class="row mt-5 mb-5">
                 <div class="col-lg-12">
@@ -52,7 +55,9 @@
             </div>
         </div>
     </section>
-</section>
+  </section>
+
+</main>
 <script>
     function validateForm() {
         var isPasswordValid = validatePasswordFormat(document.getElementById("passwordInput"));
@@ -93,25 +98,11 @@
     }
 </script>
  
-<footer class="footer-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <p>
-                    <a href="<?php echo base_url('');?>">Home</a> |
-                    <a href="<?php echo base_url('Home/vision');?>">Our vision</a> |
-                    <a href="<?php echo base_url('Home/career');?>">Careers</a> |
-                    <a href="<?php echo base_url('Home/video');?>">Videos</a> |
-                    <a href="<?php echo base_url('Home/ads');?>">Ads</a>|
-                    <a href="<?php echo base_url('Home/policy');?>">Privacy Policy </a>
-                </p>
-                <p>contact@dozendiamonds.com</p>
-                <p>Copyright © 2023 DozenDiamonds. All Rights Reserved.</p>
-            </div>
-        </div>
-    </div>
-</footer>
+<?php include("application/views/footer.php"); ?>
 
+
+
+ 
 </body>
 
 </html>

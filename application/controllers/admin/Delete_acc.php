@@ -269,7 +269,7 @@ class Delete_acc extends CI_Controller
         $reg_id = $this->input->post('reg_id');
         $admin_id = $this->session->userdata("admin_id");
         $pageNumber = $this->uri->segment(4) ? $this->uri->segment(4) : 1;
-
+        
         $apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request/approved?pageNumber=' . $pageNumber;
 
         if (!empty($searchInput['name']) && !empty($searchInput['email'])) {

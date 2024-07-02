@@ -459,6 +459,7 @@ Banner Section
     width: 100%;
     height: 636px;
     background: url(../images/dozendiamond-bg_01.png) left top no-repeat;
+    /* background-color: #ffffff; */
     background-size: cover;
 }
 

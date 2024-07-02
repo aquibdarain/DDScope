@@ -30,14 +30,31 @@ class Home extends CI_Controller
 		parent::__construct();
 		$this->load->model('Signup_model');
 		$this->load->model('Signin_model');
+		$this->load->model('AdsModel');
+		$this->load->model('Admin_blog_model');
+		$this->load->model('admin_testimonial_model');
+		$this->load->model('Contactus_model');
+		$this->load->model('Admin_aboutus_model');
+
+
 		$this->load->helper('my_general_helper');
 		$this->load->helper('url');
+		$this->load->helper('form');
 	}
 
 	public function index()
 	{
-		$this->load->view('welcome_message');
+		$data['testimonials'] = $this->admin_testimonial_model->get_testimonials();
+		// print_r($data);exit;
+		$this->load->view('welcome_message', $data);
 	}
+
+	// adding new for checking only
+	public function preview()
+	{
+		$this->load->view('welcome1');
+	}
+
 	public function investor()
 	{
 		$this->load->view('investor');
@@ -55,6 +72,15 @@ class Home extends CI_Controller
 	{
 		$this->load->view('vision');
 	}
+	public function vision3()
+	{
+		$this->load->view('vision3');
+	}
+
+	public function vision_new()
+	{
+		$this->load->view('vision2');
+	}
 
 	public function career()
 	{
@@ -66,18 +92,195 @@ class Home extends CI_Controller
 		$this->load->view('video');
 	}
 
-	public function ads()
+	// 	public function ads()
+	// 	{
+	// 		$this->load->view('ads');
+	// 	}
+
+	// public function ads() {
+	//     $data['adsvideos'] = $this->AdsModel->getAllAdsVideos(); 
+
+	//     $this->load->view('adsnew1', $data);
+	// }
+
+	public function Ads()
 	{
-		$this->load->view('ads');
+		$data['adsvideos'] = $this->AdsModel->getAllAdsVideos();
+
+		if ($_SERVER["REQUEST_METHOD"] === "POST") {
+			if (isset($_POST['vidnum'])) {
+				$vidnum = $_POST['vidnum'];
+				$data['adsvideos'] = $this->AdsModel->getAllAdsVideos();
+				$data['vidnum'] = $vidnum;
+
+				redirect('Home/ShowVideo/' . $vidnum);
+			} else {
+				echo "Error: Video code not received.";
+			}
+		} else {
+			$this->load->view('adsnew1', $data);
+		}
 	}
 
+	// public function blog()
+	// {
+	// 	$this->load->view('blog');
+	// }
+
+	public function blogdetails()
+	{
+		$this->load->view('blog-details');
+	}
+
+	public function blogdetails2()
+	{
+		$this->load->view('blog-details2');
+	}
+
+	public function blogdetails3()
+	{
+		$this->load->view('blog-details3');
+	}
+
+	public function blogdetails4()
+	{
+		$this->load->view('blog-details4');
+	}
+
+	public function blogdetails5()
+	{
+		$this->load->view('blog-details5');
+	}
+
+	public function blogdetails6()
+	{
+		$this->load->view('blog-details6');
+	}
+
+	public function blog()
+	{
+		$this->load->library("pagination");
+
+		// Get all blogs
+		$all_blogs = $this->Admin_blog_model->getblogById();
+
+		// Pagination configuration
+		$config = array();
+		$config["base_url"] = base_url("Home/blog");
+		$config["total_rows"] = count($all_blogs);
+		$config["per_page"] = 6;
+		$config["uri_segment"] = 3;
+		$config["use_page_numbers"] = TRUE;
+		$config['num_links'] = 5;
+		$config['num_tag_open'] = '<li class="page-item">';
+		$config['num_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="javascript:void(0);">';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['next_link'] = 'Next';
+		$config['prev_link'] = 'Prev';
+		$config['next_tag_open'] = '<li class="page-item">';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_tag_open'] = '<li class="page-item">';
+		$config['prev_tag_close'] = '</li>';
+		$config['first_tag_open'] = '<li class="page-item">';
+		$config['first_tag_close'] = '</li>';
+		$config['last_tag_open'] = '<li class="page-item">';
+		$config['last_tag_close'] = '</li>';
+
+		$this->pagination->initialize($config);
+
+		// Get current page number
+		$page = $this->uri->segment(3);
+		if (!is_numeric($page)) {
+			$page = 0;
+		} else {
+			$page = intval($page);
+		}
+
+		$offset = ($page > 0) ? ($page - 1) * $config["per_page"] : 0;
+
+		// Get blogs for current page
+		$data['blogs'] = array_slice($all_blogs, $offset, $config["per_page"]);
+
+		// Create pagination links
+		$data["links"] = $this->pagination->create_links();
+
+		// Flash messages
+		$data['show_login_modalwrong'] = $this->session->flashdata('show_login_modalwrong');
+		$data['show_pass_modalwrong'] = $this->session->flashdata('show_pass_modalwrong');
+		$data['show_signupT_modalwrong'] = $this->session->flashdata('show_signupT_modalwrong');
+		$data['show_signupP_modalwrong'] = $this->session->flashdata('show_signupP_modalwrong');
+		$data['show_loginP_modalwrong'] = $this->session->flashdata('show_loginP_modalwrong');
+		$data['show_forgetP_modalwrong'] = $this->session->flashdata('show_forgetP_modalwrong');
+
+		$data['error_messageswrong'] = $this->session->flashdata('error_messageswrong');
+		$data['success_message'] = $this->session->flashdata('success_message');
+		$data['error_messagesPsign'] = $this->session->flashdata('error_messagesPsign');
+		$data['error_messagesPlogin'] = $this->session->flashdata('error_messagesPlogin');
+		$data['error_messagesTsign'] = $this->session->flashdata('error_messagesTsign');
+
+		$this->load->view('blog', $data);
+	}
+
+
+	public function ShowVideo($vidnum = null)
+	{
+		if ($vidnum) {
+			$vidnums = decrypt_id($vidnum);
+			$data['vidnum'] = $vidnums;
+		} else {
+			$data['vidnum'] = null;
+		}
+		$data['adsvideos'] = $this->AdsModel->getAllAdsVideos();
+		$data['caption'] = '';
+
+		if ($data['vidnum']) {
+			foreach ($data['adsvideos'] as $video) {
+				if ($video->vidnum == $data['vidnum']) {
+					$data['caption'] = $video->caption;
+					break;
+				}
+			}
+		}
+
+		$this->load->view('adsnew1', $data);
+	}
+	// public function ShowVideo($vidnum = null) {
+	//     if($vidnum) {
+	//         $vidnums = decrypt_id($vidnum);
+	//         $data['vidnum'] = $vidnums;
+	//     } else {
+	//         $data['vidnum'] = null;  
+	//     }
+	//     $data['adsvideos'] = $this->AdsModel->getAllAdsVideos(); 
+	//     $this->load->view('adsnew1', $data);
+	// }
+
+	// public function AdsVideo()
+	// {   
+	//     $data['adsvideos'] = $this->AdsModel->getAllAdsVideos(); 
+
+	//     if ($_SERVER["REQUEST_METHOD"] === "POST") {
+	//         if (isset($_POST['video_code'])) {
+	//             $videoCode = $_POST['video_code'];
+	//             $data['adsvideos'] = $this->AdsModel->getAllAdsVideos(); 
+	//             $data['videoCode'] = $videoCode;
+	//             $this->load->view('adsnew1', $data);
+
+	//         } else {
+	//             echo "Error: Video code not received.";
+	//         }
+	//     } else {
+	//         $this->load->view('adsnew1', $data);
+	//     }
+	// }
 	public function enquire()
 	{
 		// Load form validation library
 		$this->load->library('form_validation');
 
 		// Set validation rules
-		$this->form_validation->set_rules('name', 'Name', 'required|alpha');
+		$this->form_validation->set_rules('name', 'Name', 'required|callback_alpha_space');
 		$this->form_validation->set_rules('number', 'Mobile Number', 'required|exact_length[10]|numeric');
 		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 		$this->form_validation->set_rules('message', 'Message', 'required');
@@ -109,9 +312,15 @@ class Home extends CI_Controller
 		}
 	}
 
-
-
-
+	public function alpha_space($str)
+	{
+		if (!preg_match('/^[a-zA-Z ]+$/', $str)) {
+			$this->form_validation->set_message('alpha_space', 'The {field} field may only contain alphabetical characters.');
+			return FALSE;
+		} else {
+			return TRUE;
+		}
+	}
 
 	public function signup()
 	{
@@ -463,6 +672,7 @@ class Home extends CI_Controller
 	}
 	public function Signindata()
 	{
+		//print_r($_POST);exit;
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$email = $this->input->post("email");
 			$password = $this->input->post("password");
@@ -742,7 +952,7 @@ class Home extends CI_Controller
 	{
 		$this->session->sess_destroy();
 
-		redirect(base_url('Home'));
+		redirect(base_url('Home/signin'));
 	}
 
 
@@ -1336,6 +1546,13 @@ class Home extends CI_Controller
 		$name = $this->input->post('name');
 		$email = $this->input->post('email');
 
+		// Validate the name field
+		if (!ctype_alpha(str_replace(' ', '', $name))) {
+			$this->session->set_flashdata('error_message', 'The name field must contain only alphabetic characters.');
+			redirect('home/waitlist');
+			return;
+		}
+
 		// Validate reCAPTCHA
 		$captcha_response = $this->input->post('g-recaptcha-response');
 		if (empty($captcha_response)) {
@@ -1699,5 +1916,115 @@ class Home extends CI_Controller
 	//     $this->load->view('profile_view', $data);
 	// }
 
+	public function errorPage()
+	{
 
+		$this->load->view("errorPage_view");
+	}
+
+	public function newSignin()
+	{
+		$this->load->view('signin2');
+	}
+	public function newVision()
+	{
+		$this->load->view('vision2');
+	}
+	public function demo()
+	{
+		$this->load->view('demo');
+	}
+	public function contactus()
+	{
+		$this->load->view('contactus');
+	}
+
+	public function Contactus_submit()
+	{
+		$name = $this->input->post('name');
+		$email = $this->input->post('email');
+		$contactnumber = $this->input->post('contactnumber');
+		$message = $this->input->post('message');
+
+		// Validate the name field
+		if (!ctype_alpha(str_replace(' ', '', $name))) {
+			$this->session->set_flashdata('error_message', 'The name field must contain only alphabetic characters.');
+			redirect('home/contactus');
+			return;
+		}
+
+		// Validate email
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$this->session->set_flashdata('error_message', 'Please enter a valid email address.');
+			redirect('home/contactus');
+			return;
+		}
+
+		// Validate contact number (example: must be numeric and 10-15 characters long)
+		if (!is_numeric($contactnumber) || strlen($contactnumber) < 10 || strlen($contactnumber) > 15) {
+			$this->session->set_flashdata('error_message', 'Please enter a valid contact number.');
+			redirect('home/contactus');
+			return;
+		}
+
+		// Validate message (example: must not be empty)
+		if (empty($message)) {
+			$this->session->set_flashdata('error_message', 'The message field cannot be empty.');
+			redirect('home/contactus');
+			return;
+		}
+
+		// Validate reCAPTCHA
+		$captcha_response = $this->input->post('g-recaptcha-response');
+		if (empty($captcha_response)) {
+			$this->session->set_flashdata('error_message', 'Please complete the reCAPTCHA.');
+			redirect('home/contactus');
+			return;
+		}
+
+		// Verify reCAPTCHA
+		$recaptcha_secret_key = '6LelCKYpAAAAADhYZpodlrvvUzeW7SC6k3yBl7zJ';
+		$recaptcha_response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret_key}&response={$captcha_response}");
+		$responseKeys = json_decode($recaptcha_response, true);
+
+		// Check if reCAPTCHA verification was successful
+		if (intval($responseKeys["success"]) !== 1) {
+			$this->session->set_flashdata('error_message', 'reCAPTCHA verification failed. Please try again.');
+			redirect('home/contactus');
+			return;
+		}
+
+		// Prepare data array for database insertion
+		$data = array(
+			'name' => $name,
+			'email' => $email,
+			'contactnumber' => $contactnumber,
+			'message' => $message,
+			// 'created_at' => date('Y-m-d H:i:s') // Optional: add a timestamp
+		);
+
+		// Load the Contactus model
+		$this->load->model('Contactus_model');
+
+		// Insert data into the database
+		if ($this->Contactus_model->insert_contact($data)) {
+			$this->session->set_flashdata('success_message', 'Your message has been submitted successfully.');
+		} else {
+			$this->session->set_flashdata('error_message', 'An error occurred while submitting your message. Please try again.');
+		}
+
+		redirect('home/contactus');
+	}
+
+	public function newweb2()
+	{
+		$data['testimonials'] = $this->admin_testimonial_model->get_testimonials();
+		// echo"<pre>";print_r($data);exit;
+		$this->load->view('newweb2', $data);
+	}
+	public function aboutus()
+    {   
+        $data['aboutus_data'] = $this->Admin_aboutus_model->showall();
+        $this->load->view('aboutus', $data);
+    } 
 }
