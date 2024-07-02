@@ -1,6 +1,5 @@
 RewriteEngine On
-RewriteBase /
+RewriteBase /DD_WEB/DozenDiamondsWebAndAdmin
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /index.php/$1 [L]
-
+RewriteRule ^(.*)$ /DD_WEB/DozenDiamondsWebAndAdmin/index.php/$1 [L]
