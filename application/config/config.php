@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 // $config['base_url'] = 'http://localhost/DozenDiamond/';
-$config['base_url'] = 'https://www.dozendiamonds.com/';
+$config['base_url'] = 'http://65.2.46.104/';
 // $config['base_url'] = 'https://www.dozendiamonds.com/index2/new/';
 
 /*
