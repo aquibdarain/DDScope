@@ -61,7 +61,7 @@
                                         <h4>Administrator Login</h4>
                                     </center>
                                     <div class="text-center">
-                                        <center><img alt="User Avatar" class="rectangle" src="<?= base_url('images/logo.png'); ?>" style="width: 200px; height: 80px;"></center>
+                                        <center><img alt="User Avatar" class="rectangle" src="<?= base_url('images/loading.png'); ?>" style="width: 200px; height: 80px;"></center>
                                     </div>
                                 </div>
                                 <div class="card-body text-center">
@@ -93,16 +93,9 @@
                                                 <label class="form-label text-left" for="inputPassword3">Password</label>
                                                 <?= form_password(['class' => 'form-control', 'placeholder' => 'Enter Password', 'name' => 'admin_password', 'id' => 'inputPassword3', 'autocomplete' => 'off', 'required' => 'required']); ?>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="inputCaptcha" class="text-left form-label">Captcha Security Code</label>
-                                                <div class="row">
-                                                    <div class="col-sm-5">
-                                                        <?= $image; ?>
-                                                    </div>
-                                                    <div class="col-sm-7">
-                                                        <?= form_input(['type' => 'text', 'class' => 'form-control', 'id' => 'admin_captcha', 'name' => 'admin_captcha', 'placeholder' => 'Security Code', 'autocomplete' => 'off', 'required' => 'required']); ?>
-                                                    </div>
-                                                </div>
+                                           <div class="form-group">
+                                                <div class="g-recaptcha" data-sitekey="6LelCKYpAAAAAHKFwH7w6ALStffm_X-vz2qH_xeU" required></div>
+                                                <span id="recaptchaError" style="color: red; display: none;">Please complete the reCAPTCHA.</span>
                                             </div>
                                             <div class="text-left">
                                                 <?= form_submit(['class' => 'btn btn-info', 'value' => 'Sign In']); ?>
@@ -154,6 +147,9 @@
     <script src="<?= base_url('assets/admin/js/custom.js'); ?>"></script>
 
     <script src="<?= base_url('assets/admin/js/thickbox.js'); ?>"></script>
+
+    <!-- Captcha API -->
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </body>
 
 </html>
