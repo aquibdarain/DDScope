@@ -1950,28 +1950,28 @@ class Home extends CI_Controller
 		// Validate the name field
 		if (!ctype_alpha(str_replace(' ', '', $name))) {
 			$this->session->set_flashdata('error_message', 'The name field must contain only alphabetic characters.');
-			redirect('home/contactus');
+			redirect('home/newweb2');
 			return;
 		}
 
 		// Validate email
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$this->session->set_flashdata('error_message', 'Please enter a valid email address.');
-			redirect('home/contactus');
+			redirect('home/newweb2');
 			return;
 		}
 
 		// Validate contact number (example: must be numeric and 10-15 characters long)
 		if (!is_numeric($contactnumber) || strlen($contactnumber) < 10 || strlen($contactnumber) > 15) {
 			$this->session->set_flashdata('error_message', 'Please enter a valid contact number.');
-			redirect('home/contactus');
+			redirect('home/newweb2');
 			return;
 		}
 
 		// Validate message (example: must not be empty)
 		if (empty($message)) {
 			$this->session->set_flashdata('error_message', 'The message field cannot be empty.');
-			redirect('home/contactus');
+			redirect('home/newweb2');
 			return;
 		}
 
@@ -1979,7 +1979,7 @@ class Home extends CI_Controller
 		$captcha_response = $this->input->post('g-recaptcha-response');
 		if (empty($captcha_response)) {
 			$this->session->set_flashdata('error_message', 'Please complete the reCAPTCHA.');
-			redirect('home/contactus');
+			redirect('home/newweb2');
 			return;
 		}
 
@@ -1991,7 +1991,7 @@ class Home extends CI_Controller
 		// Check if reCAPTCHA verification was successful
 		if (intval($responseKeys["success"]) !== 1) {
 			$this->session->set_flashdata('error_message', 'reCAPTCHA verification failed. Please try again.');
-			redirect('home/contactus');
+			redirect('home/newweb2');
 			return;
 		}
 
@@ -2014,7 +2014,7 @@ class Home extends CI_Controller
 			$this->session->set_flashdata('error_message', 'An error occurred while submitting your message. Please try again.');
 		}
 
-		redirect('home/contactus');
+		redirect('home/newweb2');
 	}
 
 	public function newweb2()
