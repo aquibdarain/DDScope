@@ -57,6 +57,10 @@ class Dashboard extends CI_Controller
 		 $this->load->model('Faq_model');
 		 $data['faqsCount'] = $this->Faq_model->count_faqs();
 
+		 $this->load->model('Job_model');
+		 $data['job_count'] = $this->Job_model->get_jobs_count();
+
+
 		$this->load->view('admin/dashboard_view', $data);
 	}
 
