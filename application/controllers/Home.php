@@ -1303,6 +1303,10 @@ class Home extends CI_Controller
 
 
 		try {
+
+			// Debugging statement to check the token
+			// log_message('debug', 'Token: ' . $token);
+
 			$decoded = JWT::decode($token, $secretKey, array('HS256'));
 			// print_r($decoded);exit;
 			$reg_id = $decoded->reg_id;
@@ -2022,7 +2026,7 @@ class Home extends CI_Controller
 		$data['testimonials'] = $this->admin_testimonial_model->get_testimonials();
 		$data['faqs'] = $this->Faq_model->get_faqs();
 
-		// echo"<pre>";print_r($data);exit;
+		// echo"<pre>";print_r($data);exit; // debugging 
 		$this->load->view('newweb2', $data);
 	}
 
@@ -2045,5 +2049,6 @@ class Home extends CI_Controller
             $this->Faq_model->insert_faq($data);
             $this->load->view('admin/faq_success');
         }
+		
     }
 }
