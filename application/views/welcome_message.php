@@ -259,7 +259,7 @@
         messages[currentMessageIndex].classList.add("active");
       }
 
-      setInterval(showNextMessage, 5000); // Change message every 3 seconds
+      setInterval(showNextMessage, 8000); // Change message every 5 seconds
     });
   </script>
 
