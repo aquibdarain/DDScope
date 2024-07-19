@@ -25,25 +25,43 @@
                             <h2 class="mb-0">Forget Password</h2>
                             <span class="d-block fs-6 mb-3">Reset Your Account Password</span>
 
-                            <form class="row g-3" id="resetForm" method="post">
-                                <div class="col-lg-12 position-relative">
-                                    <label for="validationDefault03" class="form-label">Email<span style="color: red;">*</span></label>
-                                    <input type="email" class="form-control" name="email" id="validationDefault03" required="">
-                                    <span id="emailError" class="text-danger" style="display: none">Please enter a valid email</span>
-                                </div>
-                                <div class="form-group">
-                                    <div class="g-recaptcha" data-sitekey="6LelCKYpAAAAAHKFwH7w6ALStffm_X-vz2qH_xeU" data-callback="onRecaptchaSubmit"></div>
-                                    <span id="recaptchaError" style="color: red; display: none;">Please complete the reCAPTCHA.</span>
-                                </div>
-                                <div class="col-lg-12">
-                                    <button type="submit" class="btn btn-primary enquir-btn" id="submitEnquiry" disabled>Submit</button>
-                                </div>
-                                <div>
-                                    <span>
-                                        Don't have an account? <a href="<?php echo base_url('Home/signin'); ?>" style="color: #2f73b2;">LogIn</a>
-                                    </span>
-                                </div>
-                            </form>
+                            <?php echo form_open('home/ForgetPassword', array('class' => 'row g-3', 'id' => 'resetForm', 'method' => 'post')); ?>
+
+                            <div class="col-lg-12 position-relative">
+                                <?php echo form_label('Email<span style="color: red;">*</span>', 'validationDefault03', array('class' => 'form-label')); ?>
+                                <?php echo form_input(array(
+                                    'type' => 'email',
+                                    'name' => 'email',
+                                    'id' => 'validationDefault03',
+                                    'class' => 'form-control',
+                                    'required' => 'required'
+                                )); ?>
+                                <span id="emailError" class="text-danger" style="display: none">Please enter a valid email</span>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="g-recaptcha" data-sitekey="6LelCKYpAAAAAHKFwH7w6ALStffm_X-vz2qH_xeU" data-callback="onRecaptchaSubmit"></div>
+                                <span id="recaptchaError" style="color: red; display: none;">Please complete the reCAPTCHA.</span>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <?php echo form_button(array(
+                                    'type' => 'submit',
+                                    'class' => 'btn btn-primary enquir-btn',
+                                    'id' => 'submitEnquiry',
+                                    'content' => 'Submit',
+                                    'disabled' => 'disabled'
+                                )); ?>
+                            </div>
+
+                            <div>
+                                <span>
+                                    Don't have an account? <a href="<?php echo base_url('Home/signin'); ?>" style="color: #2f73b2;">LogIn</a>
+                                </span>
+                            </div>
+
+                            <?php echo form_close(); ?>
+
                         </div>
                     </div>
                 </div>
