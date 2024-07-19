@@ -2031,24 +2031,29 @@ class Home extends CI_Controller
 	}
 
 	public function aboutus()
-    {   
-        $data['aboutus_data'] = $this->Admin_aboutus_model->showall();
-        $this->load->view('aboutus', $data);
-    } 
-	public function add_faq() {
-        $this->form_validation->set_rules('question', 'Question', 'required');
-        $this->form_validation->set_rules('answer', 'Answer', 'required');
+	{
+		$data['aboutus_data'] = $this->Admin_aboutus_model->showall();
+		$this->load->view('aboutus', $data);
+	}
+	public function add_faq()
+	{
+		$this->form_validation->set_rules('question', 'Question', 'required');
+		$this->form_validation->set_rules('answer', 'Answer', 'required');
 
-        if ($this->form_validation->run() === FALSE) {
-            $this->load->view('admin/add_faq');
-        } else {
-            $data = array(
-                'question' => $this->input->post('question'),
-                'answer' => $this->input->post('answer')
-            );
-            $this->Faq_model->insert_faq($data);
-            $this->load->view('admin/faq_success');
-        }
-		
-    }
+		if ($this->form_validation->run() === FALSE) {
+			$this->load->view('admin/add_faq');
+		} else {
+			$data = array(
+				'question' => $this->input->post('question'),
+				'answer' => $this->input->post('answer')
+			);
+			$this->Faq_model->insert_faq($data);
+			$this->load->view('admin/faq_success');
+		}
+	}
+	public function Faq_view()
+	{
+		$data['faqs'] = $this->Faq_model->get_faqs();
+		$this->load->view('faq_view', $data);
+	}
 }
