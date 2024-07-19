@@ -97,6 +97,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="<?php echo base_url('Home/blog'); ?>" style="color: #000;">Blog</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="<?php echo base_url('home/Faq_view'); ?>" style="color: #000;">FAQ's</a>
+              </li>
               <?php
               if (!isset($_SESSION['User_id'])) {
                 echo '<li class="nav-item">
