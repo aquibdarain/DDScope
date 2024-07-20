@@ -140,7 +140,7 @@
       <div class="col-md-6 offset-md-3">
         <div class="faq" id="accordion">
           <?php foreach ($faqs as $index => $faq): ?>
-          <div class="card <?php echo $index >= 5 ? 'hidden-faq' : ''; ?>" data-question="<?php echo strtolower($faq->question); ?>">
+          <div class="card <?php echo $index >= 5 ? 'hidden-faq' : ''; ?>" data-content="<?php echo strtolower($faq->question . ' ' . $faq->answer); ?>">
             <div class="card-header" id="faqHeading-<?php echo $index + 1; ?>">
               <div class="mb-0">
                 <h5 class="faq-title" data-toggle="collapse" data-target="#faqCollapse-<?php echo $index + 1; ?>" aria-expanded="<?php echo $index == 0 ? 'true' : 'false'; ?>" aria-controls="faqCollapse-<?php echo $index + 1; ?>">
@@ -161,13 +161,13 @@
   </div>
 </section>
 
-<!-- script for searching the questions -->
+<!-- script for searching the questions and answers -->
 <script>
     $(document).ready(function() {
         $("#searchInput").on("keyup", function() {
             var value = $(this).val().toLowerCase();
             $(".faq .card").filter(function() {
-                $(this).toggle($(this).data("question").indexOf(value) > -1)
+                $(this).toggle($(this).data("content").indexOf(value) > -1)
             });
         });
     });
