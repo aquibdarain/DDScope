@@ -36,6 +36,7 @@ class Home extends CI_Controller
 		$this->load->model('Contactus_model');
 		$this->load->model('Admin_aboutus_model');
 		$this->load->model('Faq_model');
+		$this->load->model('Career_model');
 
 
 		$this->load->helper('my_general_helper');
@@ -85,7 +86,9 @@ class Home extends CI_Controller
 
 	public function career()
 	{
-		$this->load->view('career');
+		$this->load->model('Career_model');
+		$data['jobs'] = $this->Career_model->get_all_jobs();
+		$this->load->view('career', $data);
 	}
 
 	public function video()
