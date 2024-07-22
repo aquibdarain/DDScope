@@ -28,7 +28,9 @@
                                     <p class="mb-0">
                                     <h5><label class="label">Search</label></h5>
                                     </p>
-                                    <input type="text" name="search" id="search" class="form-control" placeholder="Search by Job Title" value="<?php if (!empty($search)) { echo $search; } ?>">
+                                    <input type="text" name="search" id="search" class="form-control" placeholder="Search by Job Title" value="<?php if (!empty($search)) {
+                                                                                                                                                    echo $search;
+                                                                                                                                                } ?>">
                                 </div>
                             </div>
                             <div class="col-xl-3">
@@ -72,6 +74,8 @@
                                         <th>Requirements</th>
                                         <th>Responsibilities</th>
                                         <th>Salary</th>
+                                        <th>Job Type</th>
+                                        <th>Openings</th>
                                         <th>Created At</th>
                                         <th>Action</th>
                                     </tr>
@@ -89,10 +93,12 @@
                                                 <td><?php echo $job['requirements']; ?></td>
                                                 <td><?php echo $job['responsibilities']; ?></td>
                                                 <td><?php echo $job['salary']; ?></td>
+                                                <td><?php echo $job['job_type']; ?></td>
+                                                <td><?php echo $job['openings']; ?></td>
                                                 <td><?php echo $job['created_at']; ?></td>
                                                 <td>
                                                     <div class="dropdown show">
-                                                        <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Actions </button>
+                                                        <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Actions</button>
                                                         <div class="dropdown-menu">
                                                             <a class="dropdown-item" href="<?php echo site_url('/admin/edit_job/' . $job['id']); ?>"><i class="fa fa-edit"></i>&nbsp;Edit</a>
                                                             <a class="dropdown-item" href="<?php echo site_url('admin/delete_job/' . $job['id']); ?>" onclick="return confirm('Are you sure you want to delete this job?');"><i class="fa fa-trash"></i>&nbsp;Delete</a>
@@ -104,11 +110,12 @@
                                         }
                                     } else { ?>
                                         <tr>
-                                            <td colspan="9" style="font-size: 14px;">No job postings found.</td>
+                                            <td colspan="11" style="font-size: 14px;">No job postings found.</td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
+
                         </div>
                         <div class="text-left col-md-4 pb-2">
                             <ul class="pagination">
