@@ -7,7 +7,7 @@ class Job_controller extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Job_model');
+        $this->load->model('Career_model');
     }
 
     public function add_job()
@@ -29,7 +29,7 @@ class Job_controller extends CI_Controller
             $this->load->view('admin/add_job_view');
         } else {
             // Save job to database
-            $this->Job_model->add_job();
+            $this->Career_model->add_job();
             $this->session->set_flashdata('job_added', 'Job post added successfully.');
             redirect('admin/Job_controller/add_job');
             echo "welcome";
@@ -39,7 +39,7 @@ class Job_controller extends CI_Controller
     public function view_jobs()
     {
         // Fetch all jobs from the database
-        $data['jobs'] = $this->Job_model->get_all_jobs();
+        $data['jobs'] = $this->Career_model->get_all_jobs();
         // Load the view and pass the jobs data
         $this->load->view('admin/view_jobs', $data);
     }
