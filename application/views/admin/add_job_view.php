@@ -21,7 +21,7 @@
                     </div>
                     <div class="card-body">
 
-                    <?php if ($this->session->flashdata('job_added')): ?>
+                        <?php if ($this->session->flashdata('job_added')): ?>
                             <div class="alert alert-success">
                                 <?php echo $this->session->flashdata('job_added'); ?>
                             </div>
@@ -51,6 +51,14 @@
                             <div class="form-group">
                                 <label for="salary">Salary</label>
                                 <input type="text" class="form-control" id="salary" name="salary" value="<?php echo set_value('salary'); ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="job_type">Job Type</label>
+                                <input type="text" class="form-control" id="job_type" name="job_type" value="<?php echo set_value('job_type'); ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="openings">Openings</label>
+                                <input type="number" class="form-control" id="openings" name="openings" value="<?php echo set_value('openings'); ?>">
                             </div>
                             <button type="submit" class="btn btn-primary">Add Job</button>
                         <?php echo form_close(); ?>
