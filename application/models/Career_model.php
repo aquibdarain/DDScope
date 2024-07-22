@@ -13,6 +13,8 @@ class Career_model extends CI_Model {
             'requirements' => $this->input->post('requirements'),
             'responsibilities' => $this->input->post('responsibilities'),
             'salary' => $this->input->post('salary'),
+            'job_type' => $this->input->post('job_type'),
+            'openings' => $this->input->post('openings'),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         );
