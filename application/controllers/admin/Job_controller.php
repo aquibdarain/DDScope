@@ -23,6 +23,8 @@ class Job_controller extends CI_Controller
         $this->form_validation->set_rules('requirements', 'Requirements', 'required');
         $this->form_validation->set_rules('responsibilities', 'Responsibilities', 'required');
         $this->form_validation->set_rules('salary', 'Salary', 'required');
+        $this->form_validation->set_rules('job_type', 'Job Type', 'required');
+        $this->form_validation->set_rules('openings', 'Openings', 'required|integer');
 
         if ($this->form_validation->run() === FALSE) {
             // Load the view with the form
@@ -32,7 +34,6 @@ class Job_controller extends CI_Controller
             $this->Career_model->add_job();
             $this->session->set_flashdata('job_added', 'Job post added successfully.');
             redirect('admin/Job_controller/add_job');
-            echo "welcome";
         }
     }
 
