@@ -85,9 +85,9 @@
                 <a class="nav-link" href="<?php echo base_url('Home/signin'); ?>">Login</a>
               </li>
 
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a class="nav-link" href="<?php echo base_url('Home/career'); ?>" style="color: #000;">Careers</a>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <a class="nav-link" href="<?php echo base_url('Home/video'); ?>" style="color: #000;">Video</a>
               </li>
