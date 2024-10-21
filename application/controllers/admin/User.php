@@ -87,7 +87,7 @@ class User extends CI_Controller
         $reg_id = $this->input->post('reg_id');
         // print_r($reg_id);exit;
         $admin_id = $this->session->userdata("admin_id");
-        $apiLink = 'web/admin/' . $admin_id . '/register-user/delete';
+        $apiLink = 'api/v1/web/admin/' . $admin_id . '/register-user/delete';
 
         $dataArray = array(
             "reg_id" => $reg_id,
@@ -135,7 +135,7 @@ class User extends CI_Controller
         $selectedEmails = $this->input->post('selectedEmails');
         $subject = $this->input->post('subject');
         $message = $this->input->post('message');
-        $apiLink = 'web/admin/' . $admin_id . '/check-user-status';
+        $apiLink = 'api/v1/web/admin/' . $admin_id . '/check-user-status';
 
         $dataArray = array(
             "listOfEmail" => $selectedEmails,
@@ -159,4 +159,39 @@ class User extends CI_Controller
 
         redirect('admin/User/send_verification_mail');
     }
+
+
+     public function updateTradingStatus($userId)
+      
+    {
+
+    $this->load->model('AdsModel'); 
+
+    $result = $this->AdsModel->disableTrading($userId);
+
+    if ($result) {
+        $this->session->set_flashdata('update_success', 'User trading status updated successfully.');
+    } else {
+        $this->session->set_flashdata('error', 'Failed to update user trading status. Please try again.');
+    }
+
+    redirect('admin/User');
+   }
+
+
+    public function updateTradingStatus_active($userId)
+    {
+        $this->load->model('AdsModel');
+
+        $result = $this->AdsModel->enableTrading($userId);
+
+        if ($result) {
+            $this->session->set_flashdata('update_success', 'User trading status updated successfully.');
+        } else {
+            $this->session->set_flashdata('error', 'Failed to update user trading status. Please try again.');
+        }
+
+        redirect('admin/User');
+    }
+
 }

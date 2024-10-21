@@ -1,384 +1,186 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Aboutus extends CI_Controller {
+class Aboutus extends CI_Controller
+{
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.about/index.php/cms
-	 *	- or -  
-	 * 		http://example.about/index.php/cms/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.about/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/cms/<method_name>
-	 * @see http://codeigniter.about/user_guide/general/urls.html
-	 */
-	public function __construct()
-	{
-		
+    public function __construct()
+    {
         parent::__construct();
-		if(! $this->session->userdata('admin_id'))
-		{
-			redirect('admin/login');
-		}
-		else
-		{   
-			$this->load->helper('my_general');
-			// $this->load->helper('captcha');
-			$this->load->helper('string');
-			$this->load->library("pagination");
-			$this->load->model('admin_aboutus_model');
-			$this->output->enable_profiler(FALSE);
-		}	
-				
-	}
+        $this->load->model('Admin_aboutus_model');
+        $this->load->library('pagination');
+        $this->load->library('upload'); // Load the upload library
+        $this->load->helper('url');
+    }
 
-    
-	public function index()
-	{
-	    $abt_title='';
-		
-		if($this->input->post('search') != NULL )
-		{	
-			$abt_title = trim($this->security->xss_clean($this->input->post('abt_title'))); 
-			$this->session->set_userdata("abt_title",$abt_title); 
-		}
-		else
-		{
-		if($this->session->userdata('abt_title') != NULL){ $abt_title = $this->session->userdata('abt_title'); } 
-		}
-		
-      $data['abt_title'] = $abt_title; 
-	  $rowno = $this->uri->segment(4); 
-	  
-	   $this->load->library("pagination");
-	   
-	   $results = $this->admin_aboutus_model->getaboutusByName($abt_title);
-	   if(!empty($results)){$total_records=sizeof($results);}else{$total_records=0;}
+    public function index()
+    {
+        // Pagination configuration
+        $config['base_url'] = site_url('admin/aboutus/index');
+        $config['total_rows'] = $this->Admin_aboutus_model->get_aboutus_count();
+        $config['per_page'] = 10;
+        $config['uri_segment'] = 4;
 
-		
-		$limit_per_page = 5;
-		
-		if($rowno != 0)
-		{
-			$rowno = ($rowno - 1) * $limit_per_page;
-		}
-		else
-		{
-			$rowno = 0; 
-			
-		}
+        // Pagination styling
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['next_link'] = '&raquo;';
+        $config['prev_link'] = '&laquo;';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="active"><a href="#">';
+        $config['cur_tag_close'] = '</a></li>';
 
-		if(empty($total_records))
-		{
-			$limit_per_page = ''; 
-			$StartCount = 0 ;
-			$EndCount = 0; 
-		}
-		else
-		{
-			$EndCount = $rowno + $limit_per_page;
-			if ($EndCount > $total_records)
-			{
-				$EndCount = $total_records;
-			}
-			$StartCount = ($rowno+1);
-		}
-	
-		$data['TotalCount'] = $total_records; 
-		$data['StartCount'] = $StartCount; 
-		$data['EndCount'] = $EndCount; 
-	  
-	    $config = array();
-        $config["base_url"] = base_url() . "admin/aboutus/index";
-        $config["total_rows"] = $total_records;
-        //print_r($config);exit;
-        $config["per_page"] =$limit_per_page;
-        $config["uri_segment"] = 4;
-        $config["use_page_numbers"] = TRUE; 
-		$config['num_links'] = 5;
-		$config['num_tag_open'] = '<li class="page-item">';
-		$config['num_tag_close'] = '</li>';
-		$config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="javascript:void(0);">';
-		$config['cur_tag_close'] = '</a></li>';
-		$config['next_link'] = 'Next';
-		$config['prev_link'] = 'Prev';
-		$config['next_tag_open'] = '<li class="page-item">';
-		$config['next_tag_close'] = '</li>';
-		$config['prev_tag_open'] = '<li class="page-item">';
-		$config['prev_tag_close'] = '</li>';
-		$config['first_tag_open'] = '<li class="page-item">';
-		$config['first_tag_close'] = '</li>';
-		$config['last_tag_open'] = '<li class="page-item">';
-		$config['last_tag_close'] = '</li>';
-        //print_r($config);exit;
-		$this->pagination->initialize($config);
-	
-		$data["links"] = $this->pagination->create_links();
-		
-		$data['row'] = $rowno;
-	  
-	    $data['aboutuss'] = $this->admin_aboutus_model->getaboutusByName($abt_title,$limit_per_page,$rowno);
+        $this->pagination->initialize($config);
 
-        // $data['aboutuss'] = $this->admin_aboutus_model->get_count();
+        $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
 
+        // Fetch data from the model
+        $data['aboutus'] = $this->Admin_aboutus_model->get_all_aboutus($config['per_page'], $page);
+        $data['links'] = $this->pagination->create_links();
+        $data['TotalCount'] = $config['total_rows'];
+        $data['StartCount'] = $page + 1;
+        $data['EndCount'] = ($page + $config['per_page'] > $config['total_rows']) ? $config['total_rows'] : $page + $config['per_page'];
 
-        // $contactusCount = $this->admin_aboutus_model->get_count();
-        // $data['contactusCount'] = $contactusCount;
-    
-	    //$data['aboutpanies'] = $this->admin_aboutus_model->showall();
-		
-        $this->load->view('admin/aboutus_admin_view',$data);
-	}
+        // Load the view with the data
+        $this->load->view('admin/aboutus_admin_view', $data);
+    }
 
-	public function addaboutus()
-	{
-		$data['add_error'] = FALSE;
-		$this->load->view('admin/aboutusadd_admin_view',$data);
-	}
+    public function add_aboutus()
+    {
+        $this->load->library('form_validation');
 
-	public function submitaboutus()
-	{
-		//print_r($_POST);exit;
-		$this->form_validation->set_rules('abt_title','Title','required|trim|xss_clean');
-		$this->form_validation->set_rules('abt_desc','Description','required|trim|xss_clean');
-		
+        // Set validation rules
+        $this->form_validation->set_rules('about_name', 'Name', 'required');
+        $this->form_validation->set_rules('about_designation', 'Designation', 'required');
+        $this->form_validation->set_rules('about_bio', 'Bio', 'required');
 
-		if ($this->form_validation->run())
-		{ 
+        if ($this->form_validation->run() === FALSE) {
+            // Load the view with errors if validation fails
+            $this->load->view('admin/add_aboutus_view');
+        } else {
+            // Configuration for file upload
+            $config['upload_path'] = './upload/aboutus/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['max_size'] = 2048; // 2MB max size
+            $config['encrypt_name'] = TRUE; // Encrypt file name
 
-			$abt_image = '';
-			$abth_image = '';
-			
-			if (!empty($_FILES['abt_image']['name']) && !empty($_FILES['abth_image']['name']))
-			{
-				$abt_image = $this->file_upload('abt_image', 'jpg|jpeg|png|gif|JPG|JPEG|PNG|GIF', '2048', TRUE);
-				$abth_image = $this->file_upload('abth_image', 'jpg|jpeg|png|gif|JPG|JPEG|PNG|GIF', '2048', TRUE);
-				
-				$error = "error";
-				//echo $cms_file;exit;
-				
-				if($abt_image!=$error && $abth_image!=$error)
-				{
-					if($this->admin_aboutus_model->addaboutus($abt_image, $abth_image))
-					{				
-						$this->session->set_flashdata('add_success','New Record Added Successfully!');
-						return redirect('admin/aboutus/index');
-					}
-					else
-					{
-						@unlink('./upload/je/'.$abt_image);
-						$data['add_error'] = 'Error while adding record. Try again';			
-						$this->load->view('admin/aboutusadd_admin_view',$data);
-					}
-				}
-				else
-				{
-					$data['add_error'] = "There is an error while uploading file. Please upload image file only and try again.";
-					//print_r($data);
-					$this->load->view('admin/aboutusadd_admin_view',$data);
-				}
-			}
-			else
-			{
-					$data['add_error'] = 'Error while adding record. Try again';			
-					$this->load->view('admin/aboutusadd_admin_view',$data);		
-			}
-			
-		}
-		else
-		{
-			$data['add_error'] = FALSE;			
-			$this->load->view('admin/aboutusadd_admin_view',$data);
-		}
-	}
+            $this->upload->initialize($config);
 
-	public function editaboutus($abt_id)
-	{	
-		$abt_id = decrypt_id($abt_id); 
+            if (!$this->upload->do_upload('about_image')) {
+                $error = $this->upload->display_errors();
+                $this->session->set_flashdata('upload_error', $error);
+                $this->load->view('admin/add_aboutus_view');
+            } else {
+                $upload_data = $this->upload->data();
+                $image_path = $upload_data['file_name'];
 
-		// $abt_id = $this->uri->segment(4,0);
-		// //echo $cms_id;exit;
-		// $abt_id = $this->security->xss_clean($abt_id);
-		if(isset($abt_id) && !empty($abt_id) && $abt_id!=NULL && $abt_id > 0)
-		{
-			$data['add_error'] = FALSE;
-			$data['abt_id'] = $abt_id;
-			$data['aboutus'] = $this->admin_aboutus_model->editaboutus($abt_id);
-			// echo '<pre>';print_r($data);exit;
-			$this->load->view('admin/aboutusedit_admin_view',$data);
-		}
-		else
-		{ 
-		
-			return redirect('admin/fournotfour');
-		}
-	}
+                // Prepare data for database insertion
+                $data = array(
+                    'about_name' => $this->input->post('about_name'),
+                    'about_designation' => $this->input->post('about_designation'),
+                    'about_bio' => $this->input->post('about_bio'),
+                    'about_image' => $image_path
+                );
 
-	public function updateaboutus()
-	{		
-        
-		$this->form_validation->set_rules('abt_title','Title','required|trim');
-		
-		$this->form_validation->set_rules('abt_desc','Description','required|trim');
-				
-        $abt_id = $this->input->post('abt_id');
-		$abt_id = $this->security->xss_clean($abt_id);
-		
-		if ($this->form_validation->run())
-		{
-		
-			$abt_image = ''; 
-			$abth_image = ''; 
-			
-			if (!empty($_FILES['abt_image']['name']))
-			{
-				$abt_image = $this->file_upload('abt_image', 'jpg|jpeg|JPEG|png|gif|GIF|', '2048', TRUE);
+                // Insert data into the database
+                $this->Admin_aboutus_model->insert_aboutus($data);
+                $this->session->set_flashdata('add_success', 'About Us content added successfully.');
+                redirect('admin/aboutus/index');
+            }
+        }
+    }
 
-				$error = "error";
-					
-				if($abt_image!=$error)
-				{
-					$old_file = $this->security->xss_clean($this->input->post('old_file'));
-					//echo $old_file;exit;
-					if($old_file!="")
-					{
-						//$path_to_file = base_url().'upload/je/'.$old_file;
-						@unlink('./upload/je/'.$old_file);
-					}
-					
-				
-				}
-				else
-				{
-					
-					$data['abt_id'] = $abt_id;
-					$data['aboutus'] = $this->admin_aboutus_model->editaboutus($abt_id);//echo '<pre>';print_r($data);
-					$data['add_error'] = 'There is an error while uploading file. Please try again.';
-					$this->load->view('admin/aboutusedit_admin_view',$data);
-				}
-			}
-			
-			
-			if (!empty($_FILES['abth_image']['name']))
-			{
-				$abth_image = $this->file_upload('abth_image', 'jpg|jpeg|JPEG|png|gif|GIF|', '2048', TRUE);
+    public function edit_aboutus($about_id)
+    {
+        // Fetch the current data for the selected record
+        $data['aboutus'] = $this->Admin_aboutus_model->get_aboutus_by_id($about_id);
 
-				$error = "error";
-					
-				if($abth_image!=$error)
-				{
-					$oldh_file = $this->security->xss_clean($this->input->post('oldh_file'));
-					//echo $old_file;exit;
-					if($oldh_file!="")
-					{
-						//$path_to_file = base_url().'upload/je/'.$old_file;
-						@unlink('./upload/je/'.$old_file);
-					}
-					
-				
-				}
-				else
-				{
-					
-					$data['abt_id'] = $abt_id;
-					$data['aboutus'] = $this->admin_aboutus_model->editaboutus($abt_id);//echo '<pre>';print_r($data);
-					$data['add_error'] = 'There is an error while uploading file. Please try again.';
-					$this->load->view('admin/aboutusedit_admin_view',$data);
-				}
-			}
-			
-			
-			if($this->admin_aboutus_model->updateaboutus($abt_image,$abth_image))
-			{				
-				$this->session->set_flashdata('update_success','Record Updated Successfully!');
-				return redirect('admin/aboutus/index');
-			}
-			else
-			{
-				
-				if(isset($abt_id) && !empty($abt_id) && $abt_id!=NULL && $abt_id > 0)
-				{
-					$data['add_error'] = 'Error while updating record. Try again';
-					$data['abt_id'] = $abt_id;
-					$data['aboutus'] = $this->admin_aboutus_model->editaboutus($abt_id);//echo '<pre>';print_r($data);
-					$this->load->view('admin/aboutusedit_admin_view',$data);
-				}
-				else
-				{ 
-					return redirect('admin/fournotfour');
-				}
-			}				
-		}
-		else
-		{
-			$data['add_error'] = FALSE;
-			$data['abt_id'] = $abt_id;
-			$data['aboutus'] = $this->admin_aboutus_model->editaboutus($abt_id);//echo '<pre>';print_r($data);
-			$this->load->view('admin/aboutusedit_admin_view',$data);
-		}		
-	}
-	public function delete_aboutus($abt_id)
-	{
-		 $abt_id;
-		//echo $stud_id;exit;
-		$data['abt_id'] = $abt_id;
-		//$enq_id = $this->decode_hidden_string($enq_id);
-         //echo $cms_id;exit;
-		if($this->admin_aboutus_model->deleteaboutus($abt_id))
-			{
-			
-			//print_r($data);exit;
-              $this->session->set_flashdata('delete_successfully', 'Record Deleted Successfully');
-				return redirect('admin/aboutus/index/',$data);
-		         //print_r($data);exit;
+        if (!$data['aboutus']) {
+            // Redirect if the record does not exist
+            $this->session->set_flashdata('error', 'Invalid About Us ID.');
+            redirect('admin/aboutus/index');
+        }
 
-			}
-			else{
-				  echo "why not delete";exit;
-			}
-	    //echo "$id";exit;
-	}
-	
-	 public function file_upload($field_name, $type, $size, $encryption)
-	{ 
-		$config['upload_path']   = './upload/je'; 
-		$config['allowed_types'] = $type; 
-		$config['max_size']      = $size; 
-		/*$config['max_width']     = 1024; 
-		$config['max_height']    = 768;*/
-		$config['encrypt_name'] = $encryption;
-		$config['file_name'] = $field_name;
-		//echo "hiiii";print_r($config);exit;
+        // Set validation rules
+        $this->form_validation->set_rules('about_name', 'Name', 'required');
+        $this->form_validation->set_rules('about_designation', 'Designation', 'required');
+        $this->form_validation->set_rules('about_bio', 'Bio', 'required');
 
-		$this->load->library('upload', $config);
-						
-		if($this->upload->do_upload($field_name))//
-		{
-			$upload = $this->upload->data();
-			
-			return $upload['file_name'];
-		}					
-		else
-		{
-			$error = array('error' => $this->upload->display_errors());
-			//echo '<pre>';
-			 //print_r($error);exit;
-			return 'error';
-		}
-	}
-	
-	public function reset()
-	{
-	  $this->session->unset_userdata('abt_title');
-	  return redirect('admin/aboutus/index'); 	
-	}
-	
+        if ($this->form_validation->run() === FALSE) {
+            // Load the edit view with existing data
+            $this->load->view('admin/edit_aboutus_view', $data);
+        } else {
+            // Configuration for file upload
+            $config['upload_path'] = './upload/aboutus/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['max_size'] = 2048; // 2MB max size
+            $config['encrypt_name'] = TRUE; // Encrypt file name
+
+            $this->upload->initialize($config);
+
+            $image_path = $data['aboutus']['about_image'];
+            // Check if a new image is uploaded
+            if ($this->upload->do_upload('about_image')) {
+                $upload_data = $this->upload->data();
+                $image_path = $upload_data['file_name'];
+
+                // Optional: Delete the old image file if a new one is uploaded
+                if (file_exists('./upload/aboutus/' . $data['aboutus']['about_image'])) {
+                    unlink('./upload/aboutus/' . $data['aboutus']['about_image']);
+                }
+            } elseif ($_FILES['about_image']['error'] != 4) {
+                // If an error occurs (excluding "no file selected"), display the error
+                $error = $this->upload->display_errors();
+                $this->session->set_flashdata('upload_error', $error);
+                $this->load->view('admin/edit_aboutus_view', $data);
+                return;
+            }
+
+            // Prepare data for updating the database
+            $update_data = array(
+                'about_name' => $this->input->post('about_name'),
+                'about_designation' => $this->input->post('about_designation'),
+                'about_bio' => $this->input->post('about_bio'),
+                'about_image' => $image_path
+            );
+
+            // Update the record in the database
+            if ($this->Admin_aboutus_model->update_aboutus($about_id, $update_data)) {
+                $this->session->set_flashdata('edit_success', 'About Us content updated successfully.');
+                redirect('admin/aboutus/index');
+            } else {
+                $this->session->set_flashdata('edit_error', 'Failed to update About Us content.');
+                $this->load->view('admin/edit_aboutus_view', $data);
+            }
+        }
+    }
+
+    public function delete_aboutus($about_id)
+    {
+        // Check if the record exists
+        $aboutus = $this->Admin_aboutus_model->get_aboutus_by_id($about_id);
+
+        if (!$aboutus) {
+            // Redirect if the record does not exist
+            $this->session->set_flashdata('error', 'Invalid About Us ID.');
+            redirect('admin/aboutus/index');
+        } else {
+            // Optional: Delete the associated image file
+            if (file_exists('./upload/aboutus/' . $aboutus['about_image'])) {
+                unlink('./upload/aboutus/' . $aboutus['about_image']);
+            }
+
+            // Delete the record from the database
+            if ($this->Admin_aboutus_model->delete_aboutus($about_id)) {
+                $this->session->set_flashdata('delete_success', 'About Us content deleted successfully.');
+            } else {
+                $this->session->set_flashdata('delete_error', 'Failed to delete About Us content.');
+            }
+
+            redirect('admin/aboutus/index');
+        }
+    }
 }
-
-/* End of file cms.php */
-/* Location: ./application/controllers/cms.php */

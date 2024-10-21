@@ -79,7 +79,7 @@ if (!function_exists('decrypt_id')) {
 			$CI = &get_instance();
 
 			// define('ApiAddress', 'https://uatcni.virtualglobetechnology.com/trutravel/'); 
-			define('ApiAddress', 'https://uatdd.virtualglobetechnology.com/');
+			//define('ApiAddress', 'https://uatdd.virtualglobetechnology.com/');
 
 			// Get API token
 			$TokenData = tokenkey();
@@ -170,7 +170,7 @@ if (!function_exists('decrypt_id')) {
 			// print_r($requestData);exit;
 			$CI = &get_instance();
 
-			define('ApiAddress', 'https://uatdd.virtualglobetechnology.com/');
+			//define('ApiAddress', 'https://uatdd.virtualglobetechnology.com/');
 
 			// Get API token
 			$TokenData = tokenkey();

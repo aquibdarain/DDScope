@@ -5,9 +5,8 @@ class Login extends CI_Controller
 {
 	public function __construct()
 	{
-		// echo "heelo good";exit;
+		// echo "hii";exit;
 		parent::__construct();
-
 
 		$this->load->helper('my_general');
 		$this->load->helper('captcha');
@@ -49,59 +48,15 @@ class Login extends CI_Controller
 		$this->load->view('admin/admin_login_view', $photo);
 	}
 
-	// public function submitLogin()
-	// {
-	// 	// print_r($_POST);exit;
-	// 	// $apiLink = '/api/planner/login'; 
-	// 	$apiLink = 'web/admin/login';
-	// 	// print_r($apiLink);exit;
-	// 	$admin_useremail = $this->input->post('admin_useremail');
-	// 	$admin_password = $this->input->post('admin_password');
-
-	// 	$admin_security_code = $this->session->userdata("admin_security_code");
-	// 	$admin_captcha = $this->input->post('admin_captcha');
-	// 	if ($admin_captcha === $admin_security_code['word']) {
-
-	// 		$dataArray = array(
-	// 			"username" => $admin_useremail,
-	// 			"password" => $admin_password,
-
-	// 			"returnType" => "Web",
-	// 			"language" => $this->session->userdata("language")
-	// 		);
-
-	// 		$post_data = json_encode($dataArray);
-	// 		//  print_r($post_data);exit;
-
-	// 		$response = callApi($apiLink, $post_data);
-	// 		//  print_r($response);exit;
-	// 		if (!isset($response['status']) || empty($response['status'])) {
-	// 			$response['status'] = 0;
-	// 			$this->session->set_flashdata('invalid', $response['message']);
-	// 			return redirect('admin/Login');
-	// 		} else {
-	// 			// echo"<pre>";
-	// 			// print_r($response['data']['admin_id']);exit;
-	// 			$this->session->set_userdata('admin_id', $response['data']['admin_id']);
-
-	// 			redirect('admin/dashboard');
-	// 		}
-	// 	} else {
-	// 		$this->session->set_flashdata('captcha', 'Please enter correct Captcha');
-	// 		return redirect('admin/Login');
-	// 	}
-	// }
 	public function submitLogin()
 	{
-		$apiLink = 'web/admin/login';
+		$apiLink = 'api/v1/web/admin/login';
 		$admin_useremail = $this->input->post('admin_useremail');
 		$admin_password = $this->input->post('admin_password');
+		$admin_role = $this->input->post('admin_role');
 
-		// Google reCAPTCHA secret key
 		$secret_key = '6LelCKYpAAAAADhYZpodlrvvUzeW7SC6k3yBl7zJ';
 		$recaptcha_response = $this->input->post('g-recaptcha-response');
-
-		// Verify reCAPTCHA response
 		$response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $secret_key . "&response=" . $recaptcha_response);
 		$response_keys = json_decode($response, true);
 
@@ -109,34 +64,49 @@ class Login extends CI_Controller
 			$this->session->set_flashdata('captcha', 'Please complete the CAPTCHA');
 			return redirect('admin/Login');
 		} else {
-			// CAPTCHA verification successful
 			$dataArray = array(
 				"username" => $admin_useremail,
 				"password" => $admin_password,
+				"role" => $admin_role,
 				"returnType" => "Web",
 				"language" => $this->session->userdata("language")
 			);
-
+	
 			$post_data = json_encode($dataArray);
-
 			$response = callApi($apiLink, $post_data);
-
+	
 			if (!isset($response['status']) || empty($response['status'])) {
 				$response['status'] = 0;
 				$this->session->set_flashdata('invalid', $response['message']);
 				return redirect('admin/Login');
 			} else {
-				$this->session->set_userdata('admin_id', $response['data']['admin_id']);
-				redirect('admin/dashboard');
+				// Fetch admin details from the database
+				$this->load->model('Get_all_admins_model');
+				$adminData = $this->Get_all_admins_model->get_admin_by_id($response['data']['admin_id']);
+	
+				// Check if the admin is inactive
+				if ($adminData['admin_role'] == 'admin' && $adminData['admin_status'] == 'inactive') {
+					$this->session->set_flashdata('invalid', 'Your account is inactive. Please contact the administrator.');
+					return redirect('admin/Login');
+				}
+	
+				$this->session->set_userdata('admin_id', $adminData['admin_id']);
+				$this->session->set_userdata('admin_role', $adminData['admin_role']);
+				$this->session->set_userdata('admin_status', $adminData['admin_status']);
+	
+				// Redirect based on role
+				if ($adminData['admin_role'] === 'superadmin') {
+					redirect('admin/Dashboard/index');
+				} else {
+					redirect('admin/Dashboard/index');
+				}
 			}
 		}
 	}
 
-
 	public function logout()
 	{
 		$this->session->sess_destroy();
-
 
 		$this->session->set_flashdata('logout', 'You have successfully logged Out');
 		return redirect('admin');

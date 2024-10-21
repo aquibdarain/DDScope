@@ -145,6 +145,22 @@ class Signin_model extends CI_Model {
         return true;  
     }
     
-    
+     public function insert_ip_geolocation($ip_address, $location, $email)
+    {
+        $timestamp = date("Y-m-d H:i:s");
+        // echo $timestamp;exit;
+        $data = [
+            'ip_address' => $ip_address,
+            'email' => $email,
+            'city' => $location['city'] ?? 'N/A',
+            'region' => $location['regionName'] ?? 'N/A',
+            'country' => $location['country'] ?? 'N/A',
+            'latitude' => $location['lat'] ?? null,
+            'longitude' => $location['lon'] ?? null,
+            'created_at' => $timestamp
+        ];
+        // print_r($data);exit;
+        return $this->db->insert('dd_web_store_login_ip', $data);
+    }
 }
 ?>

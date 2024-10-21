@@ -1515,3 +1515,24 @@ h3.card-title {
     background-color: #1e4e65;
     color: white; /* Ensure the text color remains white on hover */
 }
+
+/* About Us Style */
+.peoplebox { padding: 10px 25px; text-align: center; margin-bottom: 25px; }
+.peoplebox .avtarthumb { border-radius: 50%; overflow: hidden; margin:0 auto 10px; max-width: 320px; }
+.peoplebox .avtarthumb.people {max-width: 250px; }
+.peoplebox .avtarthumb img { width: 100%; height: 100%; object-fit: cover; }
+.peoplebox .avtartext {}
+.peoplebox .avtartext h4 { margin-bottom: 0; color: #1D4E66; }
+
+.avtarlink {text-align: left;}
+.avtarlink a {text-align: center; justify-content: center; color: #333; font-weight: 600;}
+
+    .rotate-icon {
+      transition: transform 0.3s ease;
+    }
+    .avtarlink a.collapsed .rotate-icon {
+      transform: rotate(0deg);
+    }
+    .avtarlink a:not(.collapsed) .rotate-icon {
+      transform: rotate(180deg);
+    }

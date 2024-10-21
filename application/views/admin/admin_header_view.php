@@ -203,9 +203,7 @@
 						<a class="side-menu__item" href="<?php echo base_url('admin/testimonial/index'); ?>"><i class="side-menu__icon fa fa-comments"></i><span class="side-menu__label">Testimonials</span></a>
 					</li>
 
-                    <li>
-						<a class="side-menu__item" href="<?php echo base_url('admin/contactus/index'); ?>"><i class="side-menu__icon si si-user"></i><span class="side-menu__label">Contactus</span></a>
-					</li>
+                                         
 					<li>
 						<a class="side-menu__item" href="<?php echo base_url('admin/faqs/index'); ?>"><i class="side-menu__icon si si-user"></i><span class="side-menu__label">FAQ's</span></a>
 					</li>

@@ -23,8 +23,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-// $config['base_url'] = 'http://localhost/DD_WEB/DozenDiamondsWebAndAdmin/';
-$config['base_url'] = 'https://dozendiamonds.com/';
+$config['base_url'] = 'http://localhost/DozenDiamondsWebAndAdminUat/';
+// $config['base_url'] = 'https://internal.dozendiamonds.com/';
+//$config['base_url'] = 'http://65.2.46.104/';
+
 // $config['base_url'] = 'https://www.dozendiamonds.com/index2/new/';
 
 /*
@@ -514,6 +516,7 @@ $config['time_reference'] = 'local';
 |
 */
 $config['rewrite_short_tags'] = FALSE;
+//$config['max_size'] = 51200;
 
 /*
 |--------------------------------------------------------------------------

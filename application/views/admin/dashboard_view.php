@@ -114,17 +114,7 @@
 								</div>
 							</div>
 
-	                        <div class="col-xl-4 col-lg-6 col-md-12">
-								<div class="mini-stat clearfix bg-warning rounded">
-
-									<span class="mini-stat-icon"><a href="<? echo base_url('admin/contactus/index'); ?>" class="ajax-link"> <i class="fa fa-comments suser-profile-statictics-icon text-warning" style="line-height:50px"></i></a></span>
-									<div class="mini-stat-warning float-right text-right text-white">
-										<h5 class="mb-1"><a href="<?php echo base_url('admin/contactus/index'); ?>">Contactus</a></h5>
-										<h2 class="num-font mb-1 counter"><?php echo $contactusCount; ?></h2>
-									</div>
-								</div>
-							</div>
-							
+	                        							
 							<div class="col-xl-4 col-lg-6 col-md-12">
 								<div class="mini-stat clearfix bg-warning rounded">
 
@@ -136,6 +126,19 @@
 									</div>
 								</div>
 							</div>
+
+                                                        <div class="col-xl-4 col-lg-6 col-md-12">
+								<div class="mini-stat clearfix bg-secondary rounded">
+
+									<span class="mini-stat-icon"><a href="<? echo base_url('admin/About_instructor_controller/index/'); ?>" class="ajax-link"> <i class="fa fa-building user-profile-statictics-icon text-secondary" style="line-height:50px"></i></a></span>
+									<div class="mini-stat-warning float-right text-right text-white">
+										<h5 class="mb-1"><a href="<?php echo base_url('admin/About_instructor_controller/index/'); ?>">About Instructors</a></h5>
+
+										<h2 class="num-font mb-1 counter"><?php echo $Count; ?></h2>
+									</div>
+								</div>
+							</div>
+
 
 							<div class="col-xl-4 col-lg-6 col-md-12">
 								<div class="mini-stat clearfix bg-warning rounded">
@@ -149,9 +152,59 @@
 								</div>
 							</div>
 
+                                                        <div class="col-xl-4 col-lg-6 col-md-12">
+								<div class="mini-stat clearfix bg-warning rounded">
 
+									<span class="mini-stat-icon"><a href="<? echo base_url('admin/IpAddress/index'); ?>" class="ajax-link"> <i class="fa fa-comments suser-profile-statictics-icon text-warning" style="line-height:50px"></i></a></span>
+									<div class="mini-stat-warning float-right text-right text-white">
+										<h5 class="mb-1"><a href="<?php echo base_url('admin/IpAddress/index'); ?>">Ip Address</a></h5>
+
+										<h2 class="num-font mb-1 counter"><?php echo $ip_address_count; ?></h2>
+									</div>
+								</div>
+							</div>
+
+                                                        <div class="col-xl-4 col-lg-6 col-md-12">
+								<div class="mini-stat clearfix bg-warning rounded">
+
+									<span class="mini-stat-icon"><a href="<? echo base_url('admin/IpAddress/index'); ?>" class="ajax-link"> <i class="fa fa-comments suser-profile-statictics-icon text-warning" style="line-height:50px"></i></a></span>
+									<div class="mini-stat-warning float-right text-right text-white">
+										<h5 class="mb-1"><a href="<?php echo base_url('admin/Waitlist_controller/index'); ?>">Waitlist</a></h5>
+
+										<h2 class="num-font mb-1 counter"><?php echo $waitlist_users_count; ?></h2>
+									</div>
+								</div>
+							</div>
+
+                                                        <div class="col-xl-4 col-lg-6 col-md-12">
+								<div class="mini-stat clearfix bg-warning rounded">
+
+									<span class="mini-stat-icon"><a href="<? echo base_url('admin/instructor_video_upload_view'); ?>" class="ajax-link"> <i class="fa fa-comments suser-profile-statictics-icon text-warning" style="line-height:50px"></i></a></span>
+									<div class="mini-stat-warning float-right text-right text-white">
+										<h5 class="mb-1"><a href="<?php echo base_url('admin/Instructor_video/upload_video'); ?>">Instructors Video</a></h5>
+
+										<!-- <h2 class="num-font mb-1 counter"><?php echo $waitlist_users_count; ?></h2> -->
+									</div>
+								</div>
+							</div>
+
+
+                                                        <!-- this is for superadmin for create admin management -->
+							<?php if ($admin_role == 'superadmin') { ?>
+								<div class="col-xl-4 col-lg-6 col-md-12">
+									<div class="mini-stat clearfix bg-warning rounded">
+										<span class="mini-stat-icon"><a href="<?php echo base_url('admin/AdminController/fetch_all_admins'); ?>" class="ajax-link"> <i class="fa fa-comments suser-profile-statictics-icon text-warning" style="line-height:50px"></i></a></span>
+										<div class="mini-stat-warning float-right text-right text-white">
+											<h5 class="mb-1"><a href="<?php echo base_url('admin/AdminController/fetch_all_admins'); ?>">Create Admin</a></h5>
+											  <h2 class="num-font mb-1 counter"><?php echo $get_admin_count; ?></h2>
+										</div>
+									</div>
+								</div>
+							<?php } ?>
+
+                                                       
 							<!-- <div class="col-xl-4 col-lg-6 col-md-12">
-        <div class="mini-stat clearfix bg-red rounded">
+                         <div class="mini-stat clearfix bg-red rounded">
 		
 			<span class="mini-stat-icon"><a href="< echo base_url('admin/registeredusers/index');?>" class="ajax-link"> <i class="fa fa-users user-profile-statictics-icon text-primary" style="line-height:50px"></i></span>
 			<div class="mini-stat-red float-right text-right text-white">

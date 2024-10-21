@@ -23,21 +23,24 @@ class Dashboard extends CI_Controller
 	public function index()
 	{
 		$admin_id = $this->session->userdata("admin_id");
+                $admin_role = $this->session->userdata("admin_role");
 
-		$apiLink = 'web/admin/' . $admin_id . '/register-user/count';
+                $data['admin_role'] = $admin_role;
+
+		$apiLink = 'api/v1/web/admin/' . $admin_id . '/register-user/count';
 		$response = callApiGet($apiLink);
 		$data['userCount'] = isset($response['data']['result_count']) ? $response['data']['result_count'] : 0;
 
 		// Update $apiLink for Delete Account Request
-		$apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request/count';
+		$apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request/count';
 		$response = callApiGet($apiLink);
 		$data['deleteRequestCount'] = isset($response['data']['result_count']) ? $response['data']['result_count'] : 0;
 
-		$apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request/approved/count';
+		$apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request/approved/count';
 		$response = callApiGet($apiLink);
 		$data['acceptdeleteRequestCount'] = isset($response['data']['result_count']) ? $response['data']['result_count'] : 0;
 
-		$apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request/rejected/count';
+		$apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request/rejected/count';
 		$response = callApiGet($apiLink);
 		$data['rejectdeleteRequestCount'] = isset($response['data']['result_count']) ? $response['data']['result_count'] : 0;
 
@@ -51,11 +54,25 @@ class Dashboard extends CI_Controller
 		 $data['contactusCount'] = $this->Contactus_model->get_contactus_count();
 		 
 		 $this->load->model('Admin_aboutus_model');
-		 $data['aboutusCount'] = $this->Admin_aboutus_model->get_count();
+		 $data['aboutusCount'] = $this->Admin_aboutus_model->get_aboutus_count();
 
+                $this->load->model('Admin_about_instructor_model');
+		$data['Count'] = $this->Admin_about_instructor_model->get_aboutus_count();
 		 
 		 $this->load->model('Faq_model');
 		 $data['faqsCount'] = $this->Faq_model->count_faqs();
+
+                 $this->load->model('AdsModel');
+		 $data['ip_address_count'] = $this->AdsModel->count_all_geolocations();
+                 
+                 $this->load->model('Waitlist_model');
+		 $data['waitlist_users_count'] = $this->Waitlist_model->get_count();
+
+                $this->load->model('Get_all_admins_model');
+		$data['get_admin_count'] = $this->Get_all_admins_model->get_count();
+
+                $this->load->model('AdsModel');
+		$data['count_ip_locations'] = $this->AdsModel->count_all_geolocations_of_15_and_30_min_video();
 
 		$this->load->view('admin/dashboard_view', $data);
 	}

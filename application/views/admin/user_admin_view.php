@@ -156,7 +156,9 @@
                             <th align="center">Email verified</th>
                             <th align="center">Registered Platform</th>
                             <th align="center">Status</th>
-                            <!-- <th align="center">Action</th> -->
+                            <th align="center">User IP Address</th>
+                            <th align="center">User Enable Trading</th>
+                            <th align="center">Enable/Disable Trading</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -169,12 +171,30 @@
                                 <td align="center"><?php echo $user['reg_email_verify'] ? 'Yes' : 'No'; ?></td>
                                 <td align="center"><?php echo $user['created_from']; ?></td>
                                 <td align="center"><?php echo $user['reg_status']; ?></td>
-                                <!-- <td align="center">
-                                    <?php echo form_open('admin/User/delete_user', array('method' => 'post', 'onsubmit' => "return confirm('Are you sure you want to delete this user?');")); ?>
-                                    <input type="hidden" name="reg_id" value="<?php echo $user['reg_id']; ?>">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                    <?php echo form_close(); ?>
-                                </td> -->
+                                <td align="center"><?php echo $user['reg_usr_ip_address']; ?></td>
+                                <td align="center"><?php echo $user['reg_enable_trading'] ?></td>
+
+                                <td>
+                                    <div class="dropdown show">
+                                        <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Actions</button>
+                                        <div class="dropdown-menu">
+                                            <!-- Disable Option -->
+                                            <?php if ($user['reg_enable_trading'] == 1) { ?>
+                                                <a class="dropdown-item" href="<?php echo base_url('admin/User/updateTradingStatus/' . $user['reg_id']); ?>">
+                                                    <i class="fa fa-times"></i>&nbsp;Disable Trading
+                                                </a>
+                                            <?php } ?>
+
+                                            <!-- Enable Option -->
+                                            <?php if ($user['reg_enable_trading'] == 0) { ?>
+                                                <a class="dropdown-item" href="<?php echo base_url('admin/User/updateTradingStatus_active/' . $user['reg_id']); ?>">
+                                                    <i class="fa fa-check"></i>&nbsp;Enable Trading
+                                                </a>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </td>
+
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

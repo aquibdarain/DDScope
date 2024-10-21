@@ -44,14 +44,14 @@ class Delete_acc extends CI_Controller
         $admin_id = $this->session->userdata("admin_id");
         $pageNumber = $this->uri->segment(4) ? $this->uri->segment(4) : 1;
 
-        $apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request?pageNumber=' . $pageNumber;
+        $apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request?pageNumber=' . $pageNumber;
 
         if (!empty($searchInputdelete['name']) && !empty($searchInputdelete['email'])) {
-            $apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request?searchByName=' . $searchInputdelete['name'] . '&searchByEmail=' . $searchInputdelete['email'] . '&pageNumber=' . $pageNumber;
+            $apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request?searchByName=' . $searchInputdelete['name'] . '&searchByEmail=' . $searchInputdelete['email'] . '&pageNumber=' . $pageNumber;
         } elseif (!empty($searchInputdelete['name'])) {
-            $apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request?searchByName=' . $searchInputdelete['name'] . '&pageNumber=' . $pageNumber;
+            $apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request?searchByName=' . $searchInputdelete['name'] . '&pageNumber=' . $pageNumber;
         } elseif (!empty($searchInputdelete['email'])) {
-            $apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request?searchByEmail=' . $searchInputdelete['email'] . '&pageNumber=' . $pageNumber;
+            $apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request?searchByEmail=' . $searchInputdelete['email'] . '&pageNumber=' . $pageNumber;
         }
 
         $response = callApiGet($apiLink);
@@ -171,7 +171,7 @@ class Delete_acc extends CI_Controller
         $admin_id = $this->session->userdata("admin_id");
 
         // API endpoint for deleting user
-        $apiLink = 'web/admin/' . $admin_id . '/register-user/delete';
+        $apiLink = 'api/v1/web/admin/' . $admin_id . '/register-user/delete';
 
         // Check if the user clicked Accept or Reject
         $action = $this->input->post('action');
@@ -270,14 +270,14 @@ class Delete_acc extends CI_Controller
         $admin_id = $this->session->userdata("admin_id");
         $pageNumber = $this->uri->segment(4) ? $this->uri->segment(4) : 1;
         
-        $apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request/approved?pageNumber=' . $pageNumber;
+        $apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request/approved?pageNumber=' . $pageNumber;
 
         if (!empty($searchInput['name']) && !empty($searchInput['email'])) {
-            $apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request/approved?searchByName=' . $searchInput['name'] . '&searchByEmail=' . $searchInput['email'] . '&pageNumber=' . $pageNumber;
+            $apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request/approved?searchByName=' . $searchInput['name'] . '&searchByEmail=' . $searchInput['email'] . '&pageNumber=' . $pageNumber;
         } elseif (!empty($searchInput['name'])) {
-            $apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request/approved?searchByName=' . $searchInput['name'] . '&pageNumber=' . $pageNumber;
+            $apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request/approved?searchByName=' . $searchInput['name'] . '&pageNumber=' . $pageNumber;
         } elseif (!empty($searchInput['email'])) {
-            $apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request/approved?searchByEmail=' . $searchInput['email'] . '&pageNumber=' . $pageNumber;
+            $apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request/approved?searchByEmail=' . $searchInput['email'] . '&pageNumber=' . $pageNumber;
         }
 
 
@@ -353,14 +353,14 @@ class Delete_acc extends CI_Controller
         $admin_id = $this->session->userdata("admin_id");
         $pageNumber = $this->uri->segment(4) ? $this->uri->segment(4) : 1;
 
-        $apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request/rejected?pageNumber=' . $pageNumber;
+        $apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request/rejected?pageNumber=' . $pageNumber;
 
         if (!empty($searchInputReject['name']) && !empty($searchInputReject['email'])) {
-            $apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request/rejected?searchByName=' . $searchInputReject['name'] . '&searchByEmail=' . $searchInputReject['email'] . '&pageNumber=' . $pageNumber;
+            $apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request/rejected?searchByName=' . $searchInputReject['name'] . '&searchByEmail=' . $searchInputReject['email'] . '&pageNumber=' . $pageNumber;
         } elseif (!empty($searchInputReject['name'])) {
-            $apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request/rejected?searchByName=' . $searchInputReject['name'] . '&pageNumber=' . $pageNumber;
+            $apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request/rejected?searchByName=' . $searchInputReject['name'] . '&pageNumber=' . $pageNumber;
         } elseif (!empty($searchInputReject['email'])) {
-            $apiLink = 'web/admin/' . $admin_id . '/user-account-delete-request/rejected?searchByEmail=' . $searchInputReject['email'] . '&pageNumber=' . $pageNumber;
+            $apiLink = 'api/v1/web/admin/' . $admin_id . '/user-account-delete-request/rejected?searchByEmail=' . $searchInputReject['email'] . '&pageNumber=' . $pageNumber;
         }
 
 
