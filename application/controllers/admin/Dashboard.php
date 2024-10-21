@@ -62,6 +62,7 @@ class Dashboard extends CI_Controller
 		 $this->load->model('Faq_model');
 		 $data['faqsCount'] = $this->Faq_model->count_faqs();
 
+<<<<<<< HEAD
                  $this->load->model('AdsModel');
 		 $data['ip_address_count'] = $this->AdsModel->count_all_geolocations();
                  
@@ -73,6 +74,11 @@ class Dashboard extends CI_Controller
 
                 $this->load->model('AdsModel');
 		$data['count_ip_locations'] = $this->AdsModel->count_all_geolocations_of_15_and_30_min_video();
+=======
+		 $this->load->model('Career_model');
+		 $data['job_count'] = $this->Career_model->get_jobs_count();
+
+>>>>>>> d7b4c3740d35bee2dc96027519bbb507d762e6c8
 
 		$this->load->view('admin/dashboard_view', $data);
 	}
