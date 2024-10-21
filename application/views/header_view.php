@@ -174,59 +174,7 @@
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu Links</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
-<<<<<<< HEAD
-          </ul>
-=======
-          <div class="offcanvas-body">
-            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-              <li class="nav-item active">
-                <a class="nav-link" href="<?php echo base_url('') ?>">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Home/vision'); ?>">Vision</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Home/signin'); ?>">Login</a>
-              </li>
 
-              <!-- <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Home/career'); ?>" style="color: #000;">Careers</a>
-              </li> -->
-              <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Home/video'); ?>" style="color: #000;">Video</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Home/ads'); ?>" style="color: #000;">ads</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Home/blog'); ?>" style="color: #000;">Blog</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('home/Faq_view'); ?>" style="color: #000;">FAQ's</a>
-              </li>
-              <?php
-              if (!isset($_SESSION['User_id'])) {
-                echo '<li class="nav-item">
-            <a class="nav-link" href="' . base_url('Home/signup') . '" style="color: #000;">Sign up</a>
-          </li>';
-              }
-              ?>
-
-              <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Home/investor'); ?>" style="color: #000;">Investor's Page</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Home/waitlist'); ?>" style="color: #000;">Join Waitlist</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Home/enquire'); ?>" style="color: #000;">Enquire Now</a>
-              </li>
-              <li class="nav-item investbtn">
-                <a class="nav-link" href='https://wefunder.com/dozendiamonds/' target="_blank">Invest</a>
-              </li>
-            </ul>
-          </div>
->>>>>>> d7b4c3740d35bee2dc96027519bbb507d762e6c8
         </div>
       </div>
       </div>
