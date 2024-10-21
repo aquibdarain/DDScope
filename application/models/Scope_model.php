@@ -7,13 +7,21 @@ class Scope_model extends CI_Model {
         $this->load->database();
     }
 
-         // Function to fetch data from 'scope' table with optional priority filter
-    public function get_scope_data($priority = null) {
-        if ($priority !== null) {
+    public function get_scope_data($priority = null, $microservice = null, $status = null) {
+        if ($priority !== null && $priority !== '') {
             $this->db->where('Priority', $priority);
         }
+    
+        if ($microservice !== null && $microservice !== '') {
+            $this->db->like('Microservice', $microservice);
+        }
+    
+        if ($status !== null && $status !== '') {
+            $this->db->where('Status', $status);
+        }
+    
         $query = $this->db->get('scope');
-        return $query->result_array(); // Returns an array of results
+        return $query->result_array();
     }
     
 }

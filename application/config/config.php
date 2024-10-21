@@ -23,7 +23,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/DozenDiamondsWebAndAdminUat/';
+$config['base_url'] = 'http://localhost/DD_Scope/DDScope';
 // $config['base_url'] = 'https://internal.dozendiamonds.com/';
 //$config['base_url'] = 'http://65.2.46.104/';
 

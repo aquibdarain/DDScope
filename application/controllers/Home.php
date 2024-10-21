@@ -38,17 +38,19 @@ class Home extends CI_Controller
 	}
 
 	public function index() {
-		// Get the selected priority filter from the request (if any)
 		$selected_priority = $this->input->get('priority');
+		$selected_microservice = $this->input->get('microservice');
+		$selected_status = $this->input->get('status');
 	
-		// Fetch data from the model with optional priority filter
-		$data['scope_data'] = $this->Scope_model->get_scope_data($selected_priority);
-		
-		// Pass the selected priority to the view to maintain the selection
+		$data['scope_data'] = $this->Scope_model->get_scope_data($selected_priority, $selected_microservice, $selected_status);
+	
 		$data['selected_priority'] = $selected_priority;
+		$data['selected_microservice'] = $selected_microservice;
+		$data['selected_status'] = $selected_status; 
 	
 		$this->load->view('welcome_message', $data);
 	}
+	
 	
 	
 	

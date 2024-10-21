@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +25,8 @@
         }
 
         /* Style for table headers */
-        th, td {
+        th,
+        td {
             padding: 12px;
             text-align: left;
             border: 1px solid #ddd;
@@ -53,7 +55,8 @@
             text-align: center;
         }
 
-        .filter-form select {
+        .filter-form select,
+        .filter-form input {
             padding: 8px;
             font-size: 16px;
         }
@@ -70,9 +73,9 @@
         .filter-form button:hover {
             background-color: #45a049;
         }
-
     </style>
 </head>
+
 <body>
 
     <div class="table-container">
@@ -87,7 +90,22 @@
                     <option value="1" <?php echo ($selected_priority == '1') ? 'selected' : ''; ?>>1</option>
                     <option value="2" <?php echo ($selected_priority == '2') ? 'selected' : ''; ?>>2</option>
                     <option value="3" <?php echo ($selected_priority == '3') ? 'selected' : ''; ?>>3</option>
+                    <option value="4" <?php echo ($selected_priority == '4') ? 'selected' : ''; ?>>4</option>
+                    <option value="5" <?php echo ($selected_priority == '5') ? 'selected' : ''; ?>>5</option>
+
                 </select>
+
+                <label for="microservice">Search by Microservice:</label>
+                <input type="text" name="microservice" id="microservice" value="<?php echo isset($selected_microservice) ? $selected_microservice : ''; ?>" placeholder="Enter Microservice">
+
+                <!-- Add Status Filter -->
+                <label for="status">Filter by Status:</label>
+                <select name="status" id="status">
+                    <option value="">All</option>
+                    <option value="Done" <?php echo ($selected_status == 'Done') ? 'selected' : ''; ?>>Done</option>
+                    <option value="Inprogress" <?php echo ($selected_status == 'In Progress') ? 'selected' : ''; ?>>Inprogress</option>
+                </select>
+
                 <button type="submit">Filter</button>
             </form>
         </div>
@@ -101,7 +119,7 @@
                 <th>Status</th>
             </tr>
             <?php if (!empty($scope_data)): ?>
-                <?php 
+                <?php
                 $sr_no = 1;
                 foreach ($scope_data as $scope): ?>
                     <tr>
@@ -121,4 +139,5 @@
     </div>
 
 </body>
+
 </html>
